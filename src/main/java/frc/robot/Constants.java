@@ -20,4 +20,8 @@ public final class Constants {
         
     }
 
+    public static class kArm{
+        public static final double ARM_RATIO = 100; // 100:1 Versaplanetary
+    }
+
 }
