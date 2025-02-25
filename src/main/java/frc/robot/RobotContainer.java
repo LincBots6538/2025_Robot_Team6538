@@ -121,7 +121,7 @@ public class RobotContainer {
         sys_drive.registerTelemetry(logger);
 
         jyst_Manip.y().onTrue(new ArmDrivePos(sys_Arm,0));
-        jyst_Manip.x().onTrue(new ArmDrivePos(sys_Arm,));
+        jyst_Manip.x().onTrue(new ArmDrivePos(sys_Arm,160));
     }
 
     public Command getAutonomousCommand() {

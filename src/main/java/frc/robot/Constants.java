@@ -27,7 +27,7 @@ public final class Constants {
 
     public static class kArm{
         public static final double ARM_RATIO = 100; // 100:1 Versaplanetary
-        public static final double HOME = 0; // Home is in a upwards position
+        public static final double HOME = 0; // Home is in a upwards position and angle for level 2 and 3
         public static final double TOP_OF_THE_REEF = 45; // For level 4 coral
         public static final double BALL = 160; // To remove algae
     }
