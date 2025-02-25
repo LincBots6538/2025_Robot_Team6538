@@ -43,15 +43,15 @@ public class TeleOpDrive extends Command {
     
     fwd_vel = MathUtil.applyDeadband(fwd_jyst.getAsDouble(), 0.1);   // Apply deadband to joystick Value
     fwd_vel = Math.signum(fwd_vel) * Math.abs(Math.pow(fwd_vel, 2));        // Square the input
-    fwd_vel = -1.0 * fwd_vel * kDrive.MAX_SPEED.in(MetersPerSecond);          // Scale to Max Velocity
+    fwd_vel = -1.0 * fwd_vel * kDrive.MAX_SPEED.in(MetersPerSecond);          // Invert Joystick value, Scale to Max Velocity
 
     left_vel = MathUtil.applyDeadband(sid_jyst.getAsDouble(), 0.1);  // Apply deadband to joystick value
     left_vel = Math.signum(left_vel) * Math.abs(Math.pow(left_vel, 2));     // Square the input
-    left_vel = -1.0 * left_vel * kDrive.MAX_SPEED.in(MetersPerSecond);        // Scale to Max Velocity
+    left_vel = -1.0 * left_vel * kDrive.MAX_SPEED.in(MetersPerSecond);        // Invert Joystick value, Scale to Max Velocity
 
     rot_spd = MathUtil.applyDeadband(rot_jyst.getAsDouble(), 0.1);   // Apply deadband to joystick input
     rot_spd = Math.signum(rot_spd) * Math.abs(Math.pow(rot_spd, 2));        // Square the input
-    rot_spd = -1.0 * rot_spd * kDrive.TURNING_RATE.in(RadiansPerSecond);      // Scale to Max Velocity
+    rot_spd = -1.0 * rot_spd * kDrive.TURNING_RATE.in(RadiansPerSecond);      // Invert Joystick value, Scale to Max Velocity
 
     sys_drive.FCdrive(fwd_vel, left_vel, rot_spd);
   }

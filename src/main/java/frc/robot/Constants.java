@@ -13,7 +13,12 @@ import edu.wpi.first.units.measure.LinearVelocity;
 
 /** Add your docs here. */
 public final class Constants {
-
+    public static class kControllers {
+        public static final int DRIVE_PORT = 0;
+        public static final int MANIP_PORT = 1;
+    
+        
+    }
     public static class kDrive {
         public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(13.0);
         public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(180.0);
