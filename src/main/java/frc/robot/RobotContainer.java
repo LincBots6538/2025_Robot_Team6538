@@ -12,13 +12,15 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
-
+import frc.robot.subsystems.sysArm;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.kControllers;
+import frc.robot.commands.Arm.ArmDrivePos;
 import frc.robot.commands.drive.TeleOpDrive;
+import frc.robot.commands.drive.cmdDriveTo;
 import frc.robot.generated.TunerConstants;
 
 import frc.robot.subsystems.sysDrive;
@@ -31,6 +33,7 @@ public class RobotContainer {
     // Declare Subsystems
     private sysDrive sys_drive = new sysDrive();
     // Arm System
+    private sysArm sys_Arm = new sysArm();
     // Elevator System
     // Climber System
     
@@ -116,6 +119,9 @@ public class RobotContainer {
         jyst_Drive.start().and(jyst_Drive.x()).whileTrue(sys_drive.CmdSysID_static(Direction.kReverse));
 
         sys_drive.registerTelemetry(logger);
+
+        jyst_Manip.y().onTrue(new ArmDrivePos(sys_Arm,0));
+        jyst_Manip.x().onTrue(new ArmDrivePos(sys_Arm,));
     }
 
     public Command getAutonomousCommand() {
