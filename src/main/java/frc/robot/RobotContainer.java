@@ -26,6 +26,7 @@ import frc.robot.commands.Arm.Rollers;
 import frc.robot.commands.Auto.LineAuto;
 import frc.robot.commands.Climber.Climb;
 import frc.robot.commands.Elevator.ElevatorPos;
+import frc.robot.commands.Elevator.ElevatorPwr;
 import frc.robot.commands.drive.RCdrive;
 import frc.robot.commands.drive.TeleOpDrive;
 
@@ -47,6 +48,7 @@ public class RobotContainer {
     private double mtr_pwr; // Replaced with constant value
     // Elevator System
     private sysElevator sys_ele = new sysElevator();
+    private sysElevator sys_Ele = new sysElevator();
     // Climber System
     private sysClimber sys_climb = new sysClimber();
 
@@ -155,10 +157,14 @@ public class RobotContainer {
         jyst_Manip.rightTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));     // Like this where fwd is toward the elevator side of the robot
         
         // Elevator buttons
-        jyst_Manip.a().whileTrue(new ElevatorPos(sys_ele, 0));
-        jyst_Manip.b().whileTrue(new ElevatorPos(sys_ele, 0));
-        jyst_Manip.x().whileTrue(new ElevatorPos(sys_ele, 0));
-        jyst_Manip.y().whileTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.a().onTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, 0));
+
+        // Test Elevator
+        jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
+        jyst_Manip.povRight().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
 
         // Climb Buttons
         jyst_Manip.start().whileTrue(new Climb(sys_climb, kClimber.CLIMB_POS));     // Hold button to climb

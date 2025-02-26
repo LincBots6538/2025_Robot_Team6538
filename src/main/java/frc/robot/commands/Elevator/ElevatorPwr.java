@@ -8,17 +8,17 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.sysElevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorPos extends Command {
-  private sysElevator Ele;
-  private double cmd_pos;
+public class ElevatorPwr extends Command {
   
+  private sysElevator ele;
+  private double cmd_pwr;
 
-  public ElevatorPos(sysElevator ele_subsys, double ele_pos) {
+  public ElevatorPwr(sysElevator Ele_subsys, double ele_pwr) {
     
-    Ele = ele_subsys;
-    cmd_pos = ele_pos;
+    ele=Ele_subsys;
+    cmd_pwr=ele_pwr;
 
-    addRequirements(Ele);
+    addRequirements(ele);
   }
 
   // Called when the command is initially scheduled.
