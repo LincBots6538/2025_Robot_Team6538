@@ -31,6 +31,10 @@ public class sysDrive extends SubsystemBase {
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
+  private final SwerveRequest.RobotCentric RCDrive = new SwerveRequest.RobotCentric()
+          .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
+          
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -97,6 +101,14 @@ public class sysDrive extends SubsystemBase {
    */
   public void resetFC(){
     drivetrain.seedFieldCentric();
+  }
+
+  public void RCDrive(double vel_X, double vel_Y, double rot){
+    drivetrain.setControl(RCDrive
+      .withVelocityX(vel_X)
+      .withVelocityY(vel_Y)
+      .withRotationalRate(rot)  
+    );
   }
 
   /**
