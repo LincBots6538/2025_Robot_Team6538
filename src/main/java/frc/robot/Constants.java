@@ -39,6 +39,9 @@ public final class Constants {
         public static final double BALL = 160; // To remove algae
         public static final double ROLLER_FWD = 0.3; 
         public static final double ROLLER_BACK = -0.3;
+
+        public static final int ARM_CURRENT_LIMIT = 20;
+        public static final int ROLLER_CURRENT_LIMIT = 10;
     }
 
     public static class kElevator{
@@ -46,6 +49,8 @@ public final class Constants {
         public static final double LVL_2 = 30; // For level 2 coral
         public static final double LVL_3 = 60; // For level 3 coral
         public static final double LVL_4 = 90; // For level 4 coral
+
+        public static final int CURRENT_LIMIT = 30;
     }
 
     public static class kClimber {

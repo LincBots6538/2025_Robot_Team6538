@@ -37,6 +37,7 @@ public class sysArm extends SubsystemBase {
     
     cfgArm.inverted(true)
       .idleMode(IdleMode.kBrake)
+      .smartCurrentLimit(kArm.ARM_CURRENT_LIMIT)
       .encoder.positionConversionFactor(1000).velocityConversionFactor(1000);
     cfgArm.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(1.0, 0, 0);
@@ -44,8 +45,11 @@ public class sysArm extends SubsystemBase {
     mtrArm.configure(cfgArm, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
     cfgLeftRoll.inverted(true)
-      .idleMode(IdleMode.kBrake);
-    cfgRightRoll.follow(mtrLeftRoll, true);
+      .idleMode(IdleMode.kBrake)
+      .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT);
+    cfgRightRoll.idleMode(IdleMode.kBrake)
+      .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT)
+      .follow(mtrLeftRoll, true);
 
     mtrLeftRoll.configure(cfgLeftRoll, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     mtrRightRoll.configure(cfgRightRoll, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

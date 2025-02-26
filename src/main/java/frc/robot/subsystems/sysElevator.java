@@ -15,6 +15,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.kElevator;
 
 public class sysElevator extends SubsystemBase {
   /** Creates a new sysElevator. */
@@ -31,19 +32,19 @@ public class sysElevator extends SubsystemBase {
 
     cfgLeftEle.inverted(true)
       .idleMode(IdleMode.kBrake)
+      .smartCurrentLimit(kElevator.CURRENT_LIMIT)
       .encoder.positionConversionFactor(1000).velocityConversionFactor(1000);
     cfgLeftEle.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(1.0, 0, 0);
 
-      cfgRightEle.inverted(true)
+    cfgRightEle.inverted(true)
       .idleMode(IdleMode.kBrake)
+      .smartCurrentLimit(kElevator.CURRENT_LIMIT)
       .encoder.positionConversionFactor(1000).velocityConversionFactor(1000);
     cfgRightEle.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(1.0, 0, 0);
 
 
-    cfgLeftEle.inverted(true)
-      .idleMode(IdleMode.kBrake);
     cfgRightEle.follow(mtrLeftEle, true);
 
     mtrLeftEle.configure(cfgLeftEle, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
