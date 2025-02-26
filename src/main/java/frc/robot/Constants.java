@@ -32,4 +32,11 @@ public final class Constants {
         public static final double BALL = 160; // To remove algae
     }
 
+    public static class kElevator{
+        public static final double HOME = 0; // Home is when elevator is at bottom
+        public static final double LVL_2 = 30; // For level 2 coral
+        public static final double LVL_3 = 60; // For level 3 coral
+        public static final double LVL_4 = 90; // For level 4 coral
+    }
+
 }

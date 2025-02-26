@@ -19,11 +19,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.kControllers;
 import frc.robot.commands.Arm.ArmDrivePos;
+import frc.robot.commands.Arm.Rollers;
+import frc.robot.commands.Elevator.ElevatorPos;
 import frc.robot.commands.drive.TeleOpDrive;
 import frc.robot.commands.drive.cmdDriveTo;
 import frc.robot.generated.TunerConstants;
 
 import frc.robot.subsystems.sysDrive;
+import frc.robot.subsystems.sysElevator;
 
 public class RobotContainer {
     
@@ -34,7 +37,9 @@ public class RobotContainer {
     private sysDrive sys_drive = new sysDrive();
     // Arm System
     private sysArm sys_Arm = new sysArm();
+    private double mtr_pwr;
     // Elevator System
+    private sysElevator sys_ele = new sysElevator();
     // Climber System
     
     // Declare Controllers
@@ -119,9 +124,21 @@ public class RobotContainer {
         jyst_Drive.start().and(jyst_Drive.x()).whileTrue(sys_drive.CmdSysID_static(Direction.kReverse));
 
         sys_drive.registerTelemetry(logger);
-
-        jyst_Manip.y().onTrue(new ArmDrivePos(sys_Arm,0));
-        jyst_Manip.x().onTrue(new ArmDrivePos(sys_Arm,160));
+        
+        // Arm buttons
+        jyst_Manip.leftBumper().onTrue(new ArmDrivePos(sys_Arm,0));
+        jyst_Manip.rightBumper().onTrue(new ArmDrivePos(sys_Arm, 45));
+        jyst_Manip.povDown().onTrue(new ArmDrivePos(sys_Arm,160));
+        
+        // Roller buttons
+        jyst_Manip.leftTrigger().whileTrue(new Rollers(sys_Arm, -1*mtr_pwr));
+        jyst_Manip.rightTrigger().whileTrue(new Rollers(sys_Arm, mtr_pwr));
+        
+        // Elevator buttons
+        jyst_Manip.a().whileTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.b().whileTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.x().whileTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.y().whileTrue(new ElevatorPos(sys_ele, 0));
     }
 
     public Command getAutonomousCommand() {

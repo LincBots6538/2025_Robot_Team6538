@@ -5,12 +5,20 @@
 package frc.robot.commands.Elevator;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.subsystems.sysArm;
+import frc.robot.subsystems.sysElevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPos extends Command {
-  /** Creates a new ElevatorPos. */
-  public ElevatorPos() {
-    // Use addRequirements() here to declare subsystem dependencies.
+  private sysElevator Ele;
+  private double cmd_pos;
+
+  public ElevatorPos(sysElevator ele_subsys, double ele_pos) {
+    
+    Ele = ele_subsys;
+    cmd_pos = ele_pos;
+
+    addRequirements(Ele);
   }
 
   // Called when the command is initially scheduled.
