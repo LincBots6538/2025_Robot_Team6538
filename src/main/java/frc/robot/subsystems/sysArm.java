@@ -4,6 +4,9 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.DegreesPerSecond;
+import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -15,15 +18,16 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kArm;
 
 public class sysArm extends SubsystemBase {
   /** Creates a new sysArm. */
   // use correct IDs
-  private SparkMax mtrArm = new SparkMax(0, MotorType.kBrushless);
-  private SparkMax mtrLeftRoll = new SparkMax(0, MotorType.kBrushless);
-  private SparkMax mtrRightRoll = new SparkMax(0, MotorType.kBrushless);
+  private SparkMax mtrArm = new SparkMax(kArm.ARM_CANID, MotorType.kBrushless);
+  private SparkMax mtrLeftRoll = new SparkMax(kArm.LEFT_ROLLER_CADID, MotorType.kBrushless);
+  private SparkMax mtrRightRoll = new SparkMax(kArm.RIGHT_ROLLER_CANDID, MotorType.kBrushless);
 
   private SparkMaxConfig cfgArm = new SparkMaxConfig();
   private SparkMaxConfig cfgLeftRoll = new SparkMaxConfig();
@@ -38,9 +42,14 @@ public class sysArm extends SubsystemBase {
     cfgArm.inverted(true)
       .idleMode(IdleMode.kBrake)
       .smartCurrentLimit(kArm.ARM_CURRENT_LIMIT)
-      .encoder.positionConversionFactor(1000).velocityConversionFactor(1000);
+      // Convert encoder values from motor rotations to mechanism degrees
+      .encoder.positionConversionFactor(360.0/kArm.ARM_RATIO).velocityConversionFactor(360.0/kArm.ARM_RATIO); 
     cfgArm.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-      .pid(1.0, 0, 0);
+      .pid(kArm.KP, kArm.KI, kArm.KD);
+    cfgArm.closedLoop.maxMotion
+      .maxVelocity(kArm.MAX_SPEED.in(DegreesPerSecond)) // Arm degrees / s
+      .maxAcceleration(kArm.MAX_ACCEL.in(DegreesPerSecondPerSecond)) // Arm Degrees / s /s
+      .allowedClosedLoopError(1.0);
 
     mtrArm.configure(cfgArm, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -56,13 +65,15 @@ public class sysArm extends SubsystemBase {
 
     ctrArm = mtrArm.getClosedLoopController();
     encARM = mtrArm.getEncoder();
+    encARM.setPosition(0);
     
-      
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Arm position", getArmPos());
+    SmartDashboard.putNumber("Roller Current", mtrLeftRoll.getOutputCurrent());
   }
 
   /**
@@ -73,15 +84,18 @@ public class sysArm extends SubsystemBase {
     mtrLeftRoll.set(pwr);
   }
 
+  public boolean RollerLoaded(){
+    if (mtrLeftRoll.getOutputCurrent() > 1 )  return true;
+    return false;
+  }
+
   /**
    * Set postion of the arm
    *  
    * @param deg rotation of the arm relative the home postion in degrees
    */
   public void setArmPos(double deg){
-
-    double mtrRot = deg/360 * kArm.ARM_RATIO;
-    ctrArm.setReference(mtrRot, ControlType.kPosition);
+    ctrArm.setReference(deg, ControlType.kMAXMotionPositionControl);
   }
 
   /**
@@ -89,7 +103,10 @@ public class sysArm extends SubsystemBase {
    * @return  Arm position in degrees from home
    */
   public double getArmPos(){
-    double mtrROT = encARM.getPosition();
-    return (mtrROT / kArm.ARM_RATIO) * (360);
+    return encARM.getPosition();
+  }
+
+  public void setArm(double pwr){
+    mtrArm.set(pwr);
   }
 }

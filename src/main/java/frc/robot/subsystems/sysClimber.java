@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.Amps;
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Volts;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
@@ -15,6 +16,7 @@ import com.ctre.phoenix6.signals.FeedbackSensorSourceValue;
 import com.ctre.phoenix6.signals.InvertedValue;
 
 import edu.wpi.first.units.measure.Angle;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kClimber;
 
@@ -22,8 +24,8 @@ public class sysClimber extends SubsystemBase {
   /** Creates a new sysClimber. */
 
   // Declare Motor Controllers
-  private TalonFX mtrLeftClimb = new TalonFX(0);
-  private TalonFX mtrRightClimb = new TalonFX(0);
+  private TalonFX mtrLeftClimb = new TalonFX(kClimber.LEFT_CANID);
+  private TalonFX mtrRightClimb = new TalonFX(kClimber.RIGHT_CANID);
 
   // Configuration Objects
   private TalonFXConfiguration mtrCfg = new TalonFXConfiguration();
@@ -69,7 +71,7 @@ public class sysClimber extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
+    SmartDashboard.putNumber("Climber Position", getClimbPos().in(Degrees));
     // limit motion beyond 190 degerees
   }
 
