@@ -23,6 +23,7 @@ import frc.robot.Constants.kControllers;
 import frc.robot.Constants.kDrive;
 import frc.robot.Constants.kElevator;
 import frc.robot.commands.Arm.ArmDrivePos;
+import frc.robot.commands.Arm.ArmSetDC;
 import frc.robot.commands.Arm.Rollers;
 import frc.robot.commands.Auto.LineAuto;
 import frc.robot.commands.Climber.Climb;
@@ -139,12 +140,7 @@ public class RobotContainer {
         jyst_Drive.rightTrigger().whileTrue(new RCdrive(sys_drive, kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
         jyst_Drive.leftTrigger().whileTrue(new RCdrive(sys_drive, -1 * kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
         
-        // Run SysId routines when holding back/start and X/Y.
-        // Note that each routine should be run exactly once in a single log.
-        jyst_Test.back().and(jyst_Test.y()).whileTrue(sys_drive.CmdSysID_dynamic(Direction.kForward));
-        jyst_Test.back().and(jyst_Test.x()).whileTrue(sys_drive.CmdSysID_dynamic(Direction.kReverse));
-        jyst_Test.start().and(jyst_Test.y()).whileTrue(sys_drive.CmdSysID_static(Direction.kForward));
-        jyst_Test.start().and(jyst_Test.x()).whileTrue(sys_drive.CmdSysID_static(Direction.kReverse));
+        
 
         sys_drive.registerTelemetry(logger);
         
@@ -163,12 +159,34 @@ public class RobotContainer {
         jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_3));
         jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_4));
 
-        // Test Elevator
-        jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
-        jyst_Manip.povRight().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
+        // Test Elevator - Moved to Test controller
+        // jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
+        // jyst_Manip.povRight().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
 
         // Climb Buttons
         jyst_Manip.start().whileTrue(new Climb(sys_climb, kClimber.CLIMB_POS));     // Hold button to climb
+
+
+        // Test Controller
+        jyst_Test.x().whileTrue(new ArmSetDC(sys_Arm, -0.1));
+        jyst_Test.y().whileTrue(new ArmSetDC(sys_Arm, 0.1));
+        jyst_Test.a().whileTrue(new ElevatorPwr(sys_Ele, -0.1));
+        jyst_Test.b().whileTrue(new ElevatorPwr(sys_Ele, 0.1));
+
+        jyst_Test.leftBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));
+        jyst_Test.rightBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));
+
+        jyst_Drive.povLeft().whileTrue(new RCdrive(sys_drive, 0, -1 * kDrive.JOG_SPEED.in(MetersPerSecond), 0));
+        jyst_Drive.povRight().whileTrue(new RCdrive(sys_drive, 0, kDrive.JOG_SPEED.in(MetersPerSecond), 0));
+        jyst_Drive.povUp().whileTrue(new RCdrive(sys_drive, kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
+        jyst_Drive.povDown().whileTrue(new RCdrive(sys_drive, -1 * kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
+        
+        // Run SysId routines when holding back/start and X/Y.
+        // Note that each routine should be run exactly once in a single log.
+        jyst_Test.back().and(jyst_Test.y()).whileTrue(sys_drive.CmdSysID_dynamic(Direction.kForward));
+        jyst_Test.back().and(jyst_Test.x()).whileTrue(sys_drive.CmdSysID_dynamic(Direction.kReverse));
+        jyst_Test.start().and(jyst_Test.y()).whileTrue(sys_drive.CmdSysID_static(Direction.kForward));
+        jyst_Test.start().and(jyst_Test.x()).whileTrue(sys_drive.CmdSysID_static(Direction.kReverse));
     }
 
     public Command getAutonomousCommand() {

@@ -4,7 +4,10 @@
 
 package frc.robot.subsystems;
 
+import static edu.wpi.first.units.Units.*;
+
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -14,6 +17,8 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.kElevator;
 
@@ -30,19 +35,30 @@ public class sysElevator extends SubsystemBase {
   
   public sysElevator() {
 
-    cfgLeftEle.inverted(true)
+    cfgLeftEle
+      .inverted(true)
       .idleMode(IdleMode.kBrake)
-      .smartCurrentLimit(kElevator.CURRENT_LIMIT)
-      .encoder.positionConversionFactor(1000).velocityConversionFactor(1000);
-    cfgLeftEle.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-      .pid(1.0, 0, 0);
+      .smartCurrentLimit(kElevator.CURRENT_LIMIT);
+    cfgLeftEle.encoder
+      .positionConversionFactor(kElevator.MTR_TO_IN)
+      .velocityConversionFactor(kElevator.MTR_TO_IN);
+    cfgLeftEle.closedLoop
+      .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+      .pid(kElevator.KP, kElevator.KI, kElevator.KD);
+    cfgLeftEle.closedLoop.maxMotion
+      .maxVelocity(kElevator.MAX_SPEED.in(InchesPerSecond))
+      .maxAcceleration(kElevator.MAX_ACCEL.in(FeetPerSecondPerSecond)/12);
 
-    cfgRightEle.inverted(true)
+    cfgRightEle
+      .inverted(false)
       .idleMode(IdleMode.kBrake)
-      .smartCurrentLimit(kElevator.CURRENT_LIMIT)
-      .encoder.positionConversionFactor(1000).velocityConversionFactor(1000);
-    cfgRightEle.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-      .pid(1.0, 0, 0);
+      .smartCurrentLimit(kElevator.CURRENT_LIMIT);
+    cfgRightEle.encoder
+      .positionConversionFactor(kElevator.MTR_TO_IN)
+      .velocityConversionFactor(kElevator.MTR_TO_IN);
+    cfgRightEle.closedLoop
+      .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+      .pid(kElevator.KP, kElevator.KI, kElevator.KD);
 
 
     cfgRightEle.follow(mtrLeftEle, true);
@@ -52,10 +68,24 @@ public class sysElevator extends SubsystemBase {
 
     ctrEle = mtrLeftEle.getClosedLoopController();
     encEle = mtrLeftEle.getEncoder();
+    encEle.setPosition(0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Elevator Position", getPosition());
+  }
+
+  public void setDC(double pwr){
+    mtrLeftEle.set(pwr);
+  }
+
+  public void setPosition(double inches){
+    ctrEle.setReference(inches, ControlType.kMAXMotionPositionControl);
+  }
+
+  public double getPosition(){
+    return encEle.getPosition();
   }
 }

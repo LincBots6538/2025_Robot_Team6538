@@ -4,39 +4,27 @@
 
 package frc.robot.commands.Arm;
 
-import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.sysArm;
 
-/* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ArmDrivePos extends Command {
-  /** Creates a new ArmDrivePos. */
+// NOTE:  Consider using this command inline, rather than writing a subclass.  For more
+// information, see:
+// https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
+public class ArmDrivePos extends InstantCommand {
   private sysArm Arm;
-  private double cmd_pos;
+  private double cmdPos;
 
-  public ArmDrivePos(sysArm arm_subsys, double arm_pos) {
+  public ArmDrivePos(sysArm subsystem, double deg) {
     // Use addRequirements() here to declare subsystem dependencies.
+    Arm = subsystem;
+    cmdPos = deg;
 
-    Arm = arm_subsys;
-    cmd_pos = arm_pos;
-
-    addRequirements(Arm);
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return false;
+  public void initialize() {
+    Arm.setArmPos(cmdPos);
   }
 }
