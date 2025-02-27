@@ -51,7 +51,7 @@ public final class Constants {
         public static final double LVL_4 = 72.05; // For level 4 coral (inches)
         
         public static final double ELEVATOR_RATIO = 49; // 49:1
-        public static final double 
+        public static final double SPROCKET_DIAMETER = 1.75; // Inches
 
         public static final int CURRENT_LIMIT = 30;
     }

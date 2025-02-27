@@ -21,6 +21,7 @@ import frc.robot.Constants.kArm;
 import frc.robot.Constants.kClimber;
 import frc.robot.Constants.kControllers;
 import frc.robot.Constants.kDrive;
+import frc.robot.Constants.kElevator;
 import frc.robot.commands.Arm.ArmDrivePos;
 import frc.robot.commands.Arm.Rollers;
 import frc.robot.commands.Auto.LineAuto;
@@ -157,10 +158,10 @@ public class RobotContainer {
         jyst_Manip.rightTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));     // Like this where fwd is toward the elevator side of the robot
         
         // Elevator buttons
-        jyst_Manip.a().onTrue(new ElevatorPos(sys_ele, 0));
-        jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, 0));
-        jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, 0));
-        jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, 0));
+        jyst_Manip.a().onTrue(new ElevatorPos(sys_ele, kElevator.HOME));
+        jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_2));
+        jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_3));
+        jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_4));
 
         // Test Elevator
         jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
