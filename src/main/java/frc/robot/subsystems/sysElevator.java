@@ -24,8 +24,8 @@ import frc.robot.Constants.kElevator;
 
 public class sysElevator extends SubsystemBase {
   /** Creates a new sysElevator. */
-  private SparkMax mtrLeftEle = new SparkMax(0, MotorType.kBrushless);
-  private SparkMax mtrRightEle = new SparkMax(0, MotorType.kBrushless);
+  private SparkMax mtrLeftEle = new SparkMax(kElevator.LEFT_CANID, MotorType.kBrushless);
+  private SparkMax mtrRightEle = new SparkMax(kElevator.RIGHT_CANID, MotorType.kBrushless);
 
   private SparkMaxConfig cfgLeftEle = new SparkMaxConfig();
   private SparkMaxConfig cfgRightEle = new SparkMaxConfig();

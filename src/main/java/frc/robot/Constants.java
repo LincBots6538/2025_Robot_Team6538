@@ -43,9 +43,9 @@ public final class Constants {
         public static final int ARM_CURRENT_LIMIT = 20;
         public static final int ROLLER_CURRENT_LIMIT = 10;
 
-        public static final int LEFT_ROLLER_CADID = 0;
-        public static final int RIGHT_ROLLER_CANDID = 1;
-        public static final int ARM_CANID = 3;
+        public static final int LEFT_ROLLER_CADID = 4;
+        public static final int RIGHT_ROLLER_CANDID = 5;
+        public static final int ARM_CANID = 6;
         public static final double KP = 1.0;
         public static final double KI = 0.0;
         public static final double KD = 0.0;
@@ -66,8 +66,8 @@ public final class Constants {
         public static final double MTR_TO_IN = 3.1415 * SPROCKET_DIA / RATIO;
 
         public static final int CURRENT_LIMIT = 30;
-        public static final int LEFT_CANID = 0;
-        public static final int RIGHT_CANID = 1;
+        public static final int LEFT_CANID = 2;
+        public static final int RIGHT_CANID = 3;
         
         public static final double KP = 1.0;
         public static final double KI = 0.0;
@@ -81,8 +81,8 @@ public final class Constants {
         public static final double RATIO = 27.0 * 3.0;
         public static final double KP = .1;
         public static final double CURRENT_LIMIT = 40;
-        public static final int LEFT_CANID = 0;
-        public static final int RIGHT_CANID = 1;
+        public static final int LEFT_CANID = 8;
+        public static final int RIGHT_CANID = 9;
 
         public static final Angle CLIMB_POS = Degrees.of(180);
 

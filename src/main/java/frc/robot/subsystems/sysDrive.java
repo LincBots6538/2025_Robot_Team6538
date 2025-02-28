@@ -41,7 +41,7 @@ public class sysDrive extends SubsystemBase {
   /** Creates a new sysDrive. */
   public sysDrive() {
     // Construct intial Powse
-    setPose(Feet.of(0), null, null);
+    setPose(Feet.of(0), Feet.of(0), Degrees.of(0));
   }
 
   @Override

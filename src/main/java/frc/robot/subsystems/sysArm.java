@@ -39,7 +39,7 @@ public class sysArm extends SubsystemBase {
 
   public sysArm() {
     
-    cfgArm.inverted(true)
+    cfgArm.inverted(false)
       .idleMode(IdleMode.kBrake)
       .smartCurrentLimit(kArm.ARM_CURRENT_LIMIT)
       // Convert encoder values from motor rotations to mechanism degrees
