@@ -4,13 +4,19 @@
 
 package frc.robot.commands.Elevator;
 
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.GlobalVariables;
+import frc.robot.Constants.kElevator;
 import frc.robot.subsystems.sysElevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPos extends Command {
   private sysElevator Ele;
   private double cmd_pos;
+  private double max = kElevator.TOP;
+  private double min = kElevator.BOTTOM;
   
 
   public ElevatorPos(sysElevator ele_subsys, double ele_pos) {
@@ -24,6 +30,10 @@ public class ElevatorPos extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    if (GlobalVariables.Arm_Position < 35) max = kElevator.UPPER_LIMIT;
+    if (GlobalVariables.Arm_Position > 90) min = kElevator.LOWER_LIMIT;
+    cmd_pos = MathUtil.clamp(cmd_pos, min, max);
+
     Ele.setPosition(cmd_pos);
   }
 

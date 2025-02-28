@@ -20,6 +20,7 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.GlobalVariables;
 import frc.robot.Constants.kArm;
 
 public class sysArm extends SubsystemBase {
@@ -36,6 +37,8 @@ public class sysArm extends SubsystemBase {
   
   private SparkClosedLoopController ctrArm;
   private RelativeEncoder encARM;
+
+  private double Pos;
 
   public sysArm() {
     
@@ -67,12 +70,15 @@ public class sysArm extends SubsystemBase {
     encARM = mtrArm.getEncoder();
     encARM.setPosition(0);
     
+    Pos = getArmPos();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Arm position", getArmPos());
+    Pos = getArmPos();
+    SmartDashboard.putNumber("Arm position", Pos);
+    GlobalVariables.Arm_Position = Pos;
     SmartDashboard.putNumber("Roller Current", mtrLeftRoll.getOutputCurrent());
   }
 

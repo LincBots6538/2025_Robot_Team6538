@@ -74,6 +74,11 @@ public final class Constants {
         public static final double KD = 0.0;
         public static final LinearVelocity MAX_SPEED = InchesPerSecond.of(20);
         public static final LinearAcceleration MAX_ACCEL = MAX_SPEED.div(Seconds.of(1));
+
+        public static final double BOTTOM = 0;
+        public static final double LOWER_LIMIT = 0;
+        public static final double UPPER_LIMIT = 10;
+        public static final double TOP = 31.0;
     }
 
     public static class kClimber {

@@ -20,6 +20,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.GlobalVariables;
 import frc.robot.Constants.kElevator;
 
 public class sysElevator extends SubsystemBase {
@@ -32,6 +33,8 @@ public class sysElevator extends SubsystemBase {
 
   private SparkClosedLoopController ctrEle;
   private RelativeEncoder encEle;
+
+  private double Pos;
   
   public sysElevator() {
 
@@ -69,12 +72,16 @@ public class sysElevator extends SubsystemBase {
     ctrEle = mtrLeftEle.getClosedLoopController();
     encEle = mtrLeftEle.getEncoder();
     encEle.setPosition(0);
+
+    Pos = getPosition();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-    SmartDashboard.putNumber("Elevator Position", getPosition());
+    Pos = getPosition();
+    SmartDashboard.putNumber("Elevator Position", Pos);
+    GlobalVariables.Elevator_Position = Pos;
   }
 
   public void setDC(double pwr){

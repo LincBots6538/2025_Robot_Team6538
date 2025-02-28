@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.*;
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.sysArm;
@@ -94,6 +95,8 @@ public class RobotContainer {
         // Auto Chooser
         dsh_selAuto.setDefaultOption("Line Auto", new LineAuto(sys_drive));
         dsh_selAuto.addOption("Do Nothing", null);
+
+        Shuffleboard.getTab("Auto").add(dsh_selAuto);
 
         configureBindings();
     }

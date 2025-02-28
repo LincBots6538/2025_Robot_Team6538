@@ -4,7 +4,10 @@
 
 package frc.robot.commands.Arm;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.robot.GlobalVariables;
+import frc.robot.Constants.kElevator;
 import frc.robot.subsystems.sysArm;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -13,6 +16,8 @@ import frc.robot.subsystems.sysArm;
 public class ArmDrivePos extends InstantCommand {
   private sysArm Arm;
   private double cmdPos;
+  private double min = 0;
+  private double max = 160;
 
   public ArmDrivePos(sysArm subsystem, double deg) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -25,6 +30,11 @@ public class ArmDrivePos extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+
+    if (GlobalVariables.Elevator_Position > kElevator.UPPER_LIMIT) min = 35;
+    if (GlobalVariables.Elevator_Position < kElevator.LOWER_LIMIT) max = 90;
+    cmdPos = MathUtil.clamp(cmdPos, min, max);
+
     Arm.setArmPos(cmdPos);
   }
 }
