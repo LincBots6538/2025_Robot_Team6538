@@ -28,7 +28,7 @@ public final class Constants {
         public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(180.0);
 
         public static final LinearVelocity MAX_AUTO_SPEED = FeetPerSecond.of(5);
-        public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(2.0);
+        public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(3.0);
         
     }
 
