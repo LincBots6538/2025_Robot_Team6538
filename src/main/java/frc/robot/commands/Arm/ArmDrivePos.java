@@ -16,8 +16,6 @@ import frc.robot.subsystems.sysArm;
 public class ArmDrivePos extends InstantCommand {
   private sysArm Arm;
   private double cmdPos;
-  private double min = 0;
-  private double max = 160;
 
   public ArmDrivePos(sysArm subsystem, double deg) {
     // Use addRequirements() here to declare subsystem dependencies.
@@ -30,7 +28,8 @@ public class ArmDrivePos extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    double min = 0;
+    double max = 160;
     if (GlobalVariables.Elevator_Position > kElevator.UPPER_LIMIT) min = 40;
     if (GlobalVariables.Elevator_Position < kElevator.LOWER_LIMIT) max = 120;
     cmdPos = MathUtil.clamp(cmdPos, min, max);

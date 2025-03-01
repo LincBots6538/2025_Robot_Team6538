@@ -7,6 +7,8 @@ package frc.robot.subsystems;
 import static edu.wpi.first.units.Units.DegreesPerSecond;
 import static edu.wpi.first.units.Units.DegreesPerSecondPerSecond;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -19,10 +21,12 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.GlobalVariables;
 import frc.robot.Constants.kArm;
+import frc.robot.Constants.kElevator;
 
 public class sysArm extends SubsystemBase {
   /** Creates a new sysArm. */
@@ -79,12 +83,25 @@ public class sysArm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Pos = getArmPos();
-    SmartDashboard.putNumber("Arm position", Pos);
     GlobalVariables.Arm_Position = Pos;
-    SmartDashboard.putNumber("Elevator from arm", GlobalVariables.Elevator_Position);
-    SmartDashboard.putNumber("Roller Current", mtrLeftRoll.getOutputCurrent());
-    SmartDashboard.putBoolean("Coral Switch", coral_sw.get());
 
+    if (Pos < 40) {
+      GlobalVariables.Elevator_Max = kElevator.UPPER_LIMIT;
+    } else {
+      GlobalVariables.Elevator_Max = kElevator.TOP;
+    }
+    if (Pos > 90) {
+      GlobalVariables.Elevator_Min = kElevator.LOWER_LIMIT;
+    } else {
+      GlobalVariables.Elevator_Min = kElevator.BOTTOM;
+    }
+    
+    Shuffleboard.getTab("Elevator").addNumber("Elevator Max",this::getElevatorMax);
+    Shuffleboard.getTab("Elevator").addNumber("Elevator Min",this::getElevatorMin);
+    Shuffleboard.getTab("Elevator").addNumber("Arm Position",this::getArmPos);
+
+    Shuffleboard.getTab("Elevator").addBoolean("Coral Switch", coral_sw::get);
+    Shuffleboard.getTab("Elevator").addNumber("Roller Current", mtrLeftRoll::getOutputCurrent);
   }
 
   /**
@@ -119,5 +136,12 @@ public class sysArm extends SubsystemBase {
 
   public void setArm(double pwr){
     mtrArm.set(pwr);
+  }
+
+  public double getElevatorMax(){
+    return GlobalVariables.Elevator_Max;
+  }
+  public double getElevatorMin(){
+    return GlobalVariables.Elevator_Min;
   }
 }

@@ -15,8 +15,7 @@ import frc.robot.subsystems.sysElevator;
 public class ElevatorPos extends Command {
   private sysElevator Ele;
   private double cmd_pos;
-  private double max = kElevator.TOP;
-  private double min = kElevator.BOTTOM;
+  
   
 
   public ElevatorPos(sysElevator ele_subsys, double ele_pos) {
@@ -30,6 +29,8 @@ public class ElevatorPos extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
+    double max = kElevator.TOP;
+    double min = kElevator.BOTTOM;
     if (GlobalVariables.Arm_Position < 38) max = kElevator.UPPER_LIMIT;
     if (GlobalVariables.Arm_Position > 150) min = kElevator.LOWER_LIMIT;
     cmd_pos = MathUtil.clamp(cmd_pos, min, max);

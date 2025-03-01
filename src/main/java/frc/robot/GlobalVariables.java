@@ -8,4 +8,8 @@ package frc.robot;
 public class GlobalVariables {
     public static double Arm_Position;
     public static double Elevator_Position;
+    public static double Elevator_Max;
+    public static double Elevator_Min;
+    public static double Arm_Max;
+    public static double Arm_Min;
 }
