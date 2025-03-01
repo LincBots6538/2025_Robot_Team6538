@@ -48,9 +48,9 @@ public class sysElevator extends SubsystemBase {
     cfgLeftEle.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(kElevator.KP, kElevator.KI, kElevator.KD);
-    cfgLeftEle.closedLoop.maxMotion
-      .maxVelocity(kElevator.MAX_SPEED.in(InchesPerSecond))
-      .maxAcceleration(kElevator.MAX_ACCEL.in(FeetPerSecondPerSecond)/12);
+    //cfgLeftEle.closedLoop.maxMotion
+    //  .maxVelocity(kElevator.MAX_SPEED.in(InchesPerSecond))
+    //  .maxAcceleration(kElevator.MAX_ACCEL.in(FeetPerSecondPerSecond)/12);
 
     cfgRightEle
       .inverted(false)
@@ -82,6 +82,9 @@ public class sysElevator extends SubsystemBase {
     Pos = getPosition();
     SmartDashboard.putNumber("Elevator Position", Pos);
     GlobalVariables.Elevator_Position = Pos;
+    SmartDashboard.putNumber("elevator output", mtrLeftEle.getOutputCurrent());
+    
+    
   }
 
   public void setDC(double pwr){
@@ -89,7 +92,7 @@ public class sysElevator extends SubsystemBase {
   }
 
   public void setPosition(double inches){
-    ctrEle.setReference(inches, ControlType.kMAXMotionPositionControl);
+    ctrEle.setReference(inches, ControlType.kPosition);
   }
 
   public double getPosition(){

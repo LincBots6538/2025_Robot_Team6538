@@ -28,14 +28,14 @@ public final class Constants {
         public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(180.0);
 
         public static final LinearVelocity MAX_AUTO_SPEED = FeetPerSecond.of(5);
-        public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(3.0);
+        public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(6.0);
         
     }
 
     public static class kArm{
         public static final double ARM_RATIO = 100; // 100:1 Versaplanetary
         public static final double HOME = 0; // Home is in a upwards position and angle for level 2 and 3
-        public static final double TOP_OF_THE_REEF = 45; // For level 4 coral
+        public static final double TOP_OF_THE_REEF = 43; // For level 4 coral
         public static final double BALL = 160; // To remove algae
         public static final double ROLLER_FWD = 0.3; 
         public static final double ROLLER_BACK = -0.3;
@@ -46,7 +46,7 @@ public final class Constants {
         public static final int LEFT_ROLLER_CADID = 4;
         public static final int RIGHT_ROLLER_CANDID = 5;
         public static final int ARM_CANID = 6;
-        public static final double KP = 1.0;
+        public static final double KP = 0.1;
         public static final double KI = 0.0;
         public static final double KD = 0.0;
         public static final AngularVelocity MAX_SPEED = DegreesPerSecond.of(180);
@@ -56,10 +56,10 @@ public final class Constants {
 
     public static class kElevator{
         // these height should represent the distance the elevator moves from the starting position, or we can change the math to be the height from the ground
-        public static final double HOME = 0; // Home is when elevator is at bottom
-        public static final double LVL_2 = 31.89; // For level 2 coral (inches)
-        public static final double LVL_3 = 47.64; // For level 3 coral (inches)
-        public static final double LVL_4 = 72.05; // For level 4 coral (inches)
+        public static final double HOME = 1; // Home is when elevator is at chute
+        public static final double LVL_2 = 11.5; // For level 2 coral (inches)
+        public static final double LVL_3 = 18.8; // For level 3 coral (inches)
+        public static final double LVL_4 = 30.5; // For level 4 coral (inches)
         
         public static final double RATIO = 49; // 49:1
         public static final double SPROCKET_DIA = 1.75; // Pitch Diameter of 22T #25 Sprocket
@@ -69,27 +69,27 @@ public final class Constants {
         public static final int LEFT_CANID = 2;
         public static final int RIGHT_CANID = 3;
         
-        public static final double KP = 1.0;
+        public static final double KP = 0.06;
         public static final double KI = 0.0;
         public static final double KD = 0.0;
         public static final LinearVelocity MAX_SPEED = InchesPerSecond.of(20);
-        public static final LinearAcceleration MAX_ACCEL = MAX_SPEED.div(Seconds.of(1));
+        public static final LinearAcceleration MAX_ACCEL = MAX_SPEED.div(Seconds.of(.5));
 
         public static final double BOTTOM = 0;
-        public static final double LOWER_LIMIT = 0;
-        public static final double UPPER_LIMIT = 10;
-        public static final double TOP = 31.0;
+        public static final double LOWER_LIMIT = 8.0;
+        public static final double UPPER_LIMIT = 17.0;
+        public static final double TOP = 30.5;
     }
 
     public static class kClimber {
     
         public static final double RATIO = 27.0 * 3.0;
-        public static final double KP = .1;
-        public static final double CURRENT_LIMIT = 40;
+        public static final double KP = 10.0;
+        public static final double CURRENT_LIMIT = 60;
         public static final int LEFT_CANID = 8;
         public static final int RIGHT_CANID = 9;
 
-        public static final Angle CLIMB_POS = Degrees.of(180);
+        public static final Angle CLIMB_POS = Degrees.of(200);
 
     }
 }

@@ -7,6 +7,8 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -16,6 +18,9 @@ import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.sysArm;
 import frc.robot.subsystems.sysClimber;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
 import frc.robot.Constants.kArm;
@@ -24,15 +29,18 @@ import frc.robot.Constants.kControllers;
 import frc.robot.Constants.kDrive;
 import frc.robot.Constants.kElevator;
 import frc.robot.commands.Arm.ArmDrivePos;
+import frc.robot.commands.Arm.ArmSPadjust;
 import frc.robot.commands.Arm.ArmSetDC;
 import frc.robot.commands.Arm.Rollers;
 import frc.robot.commands.Auto.LineAuto;
 import frc.robot.commands.Climber.Climb;
+import frc.robot.commands.Elevator.EleSPadjust;
 import frc.robot.commands.Elevator.ElevatorPos;
 import frc.robot.commands.Elevator.ElevatorPwr;
+import frc.robot.commands.drive.FCdrive;
 import frc.robot.commands.drive.RCdrive;
 import frc.robot.commands.drive.TeleOpDrive;
-
+import frc.robot.commands.drive.reseedFC;
 import frc.robot.generated.TunerConstants;
 
 import frc.robot.subsystems.sysDrive;
@@ -142,6 +150,7 @@ public class RobotContainer {
         jyst_Drive.rightTrigger().whileTrue(new RCdrive(sys_drive, kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
         jyst_Drive.leftTrigger().whileTrue(new RCdrive(sys_drive, -1 * kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
         
+        jyst_Drive.start().onTrue(new reseedFC(sys_drive));
         
 
         sys_drive.registerTelemetry(logger);
@@ -149,7 +158,7 @@ public class RobotContainer {
         // Arm buttons
         jyst_Manip.leftBumper().onTrue(new ArmDrivePos(sys_Arm,kArm.HOME));         // Added this as set positions in constants
         jyst_Manip.rightBumper().onTrue(new ArmDrivePos(sys_Arm, kArm.TOP_OF_THE_REEF));
-        jyst_Manip.povDown().onTrue(new ArmDrivePos(sys_Arm,kArm.BALL));
+        //jyst_Manip.povDown().onTrue(new ArmDrivePos(sys_Arm,kArm.BALL));
         
         // Roller buttons
         jyst_Manip.leftTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));     // Like the use of the mtr_pwr Varible, lets set some values in constants
@@ -160,6 +169,16 @@ public class RobotContainer {
         jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_2));
         jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_3));
         jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_4));
+
+        // jyst_Manip.povLeft().whileTrue(new ArmSetDC(sys_Arm, -0.1));
+        // jyst_Manip.povRight().whileTrue(new ArmSetDC(sys_Arm, 0.1));
+        // jyst_Manip.povDown().whileTrue(new ElevatorPwr(sys_ele, -0.2));
+        // jyst_Manip.povUp().whileTrue(new ElevatorPwr(sys_ele, 0.2));
+
+        jyst_Manip.povLeft().whileTrue(new ArmSPadjust(sys_Arm, -5.0));
+        jyst_Manip.povRight().whileTrue(new ArmSPadjust(sys_Arm, 5.0));
+        jyst_Manip.povDown().whileTrue(new EleSPadjust(sys_ele, -3.0));
+        jyst_Manip.povUp().whileTrue(new EleSPadjust(sys_ele, 3.0));
 
         // Test Elevator - Moved to Test controller
         // jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
@@ -172,8 +191,8 @@ public class RobotContainer {
         // Test Controller
         jyst_Test.x().whileTrue(new ArmSetDC(sys_Arm, -0.1));
         jyst_Test.y().whileTrue(new ArmSetDC(sys_Arm, 0.1));
-        jyst_Test.a().whileTrue(new ElevatorPwr(sys_ele, -0.1));
-        jyst_Test.b().whileTrue(new ElevatorPwr(sys_ele, 0.1));
+        jyst_Test.a().whileTrue(new ElevatorPwr(sys_ele, -0.2));
+        jyst_Test.b().whileTrue(new ElevatorPwr(sys_ele, 0.2));
 
         jyst_Test.leftBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));
         jyst_Test.rightBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));
@@ -192,6 +211,13 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-        return dsh_selAuto.getSelected();
+       //return new TeleOpDrive(sys_drive, sys_drive::autospeed, sys_drive::zerospeed, sys_drive::zerospeed);
+       //return new LineAuto(sys_drive);
+       return new SequentialCommandGroup(
+        new ParallelDeadlineGroup(
+        new WaitCommand(2),
+        new TeleOpDrive(sys_drive, sys_drive::autospeed, sys_drive::zerospeed, sys_drive::zerospeed)),
+        new TeleOpDrive(sys_drive, sys_drive::zerospeed, sys_drive::zerospeed, sys_drive::zerospeed)
+         );
     }
 }

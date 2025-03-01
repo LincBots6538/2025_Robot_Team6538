@@ -6,6 +6,8 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
+import java.util.function.DoubleSupplier;
+
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
@@ -14,6 +16,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
@@ -27,12 +30,12 @@ public class sysDrive extends SubsystemBase {
   private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   private final SwerveRequest.FieldCentric FCdrive = new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final SwerveRequest.RobotCentric RCDrive = new SwerveRequest.RobotCentric()
-          .withDeadband(MaxSpeed * 0.1).withRotationalDeadband(MaxAngularRate * 0.1) // Add a 10% deadband
+          .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
           
 
@@ -94,6 +97,7 @@ public class sysDrive extends SubsystemBase {
       .withVelocityY(vel_Y)
       .withRotationalRate(rot)
     );
+    SmartDashboard.putNumber("drive fwd cmd", vel_X);
   }
 
   /*
@@ -138,5 +142,13 @@ public class sysDrive extends SubsystemBase {
 
   public Command CmdSysID_static(Direction dir){
     return this.runOnce(() -> SysID_static(dir));
+  }
+  
+  public double autospeed(){
+    return 0.55;
+  }
+
+  public double zerospeed(){
+    return 0;
   }
 }

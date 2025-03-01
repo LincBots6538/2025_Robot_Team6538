@@ -18,6 +18,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.GlobalVariables;
@@ -34,6 +35,7 @@ public class sysArm extends SubsystemBase {
   private SparkMaxConfig cfgLeftRoll = new SparkMaxConfig();
   private SparkMaxConfig cfgRightRoll = new SparkMaxConfig();
 
+  private DigitalInput coral_sw = new DigitalInput(0);
   
   private SparkClosedLoopController ctrArm;
   private RelativeEncoder encARM;
@@ -49,10 +51,10 @@ public class sysArm extends SubsystemBase {
       .encoder.positionConversionFactor(360.0/kArm.ARM_RATIO).velocityConversionFactor(360.0/kArm.ARM_RATIO); 
     cfgArm.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(kArm.KP, kArm.KI, kArm.KD);
-    cfgArm.closedLoop.maxMotion
-      .maxVelocity(kArm.MAX_SPEED.in(DegreesPerSecond)) // Arm degrees / s
-      .maxAcceleration(kArm.MAX_ACCEL.in(DegreesPerSecondPerSecond)) // Arm Degrees / s /s
-      .allowedClosedLoopError(1.0);
+    // cfgArm.closedLoop.maxMotion
+    //   .maxVelocity(kArm.MAX_SPEED.in(DegreesPerSecond)) // Arm degrees / s
+    //   .maxAcceleration(kArm.MAX_ACCEL.in(DegreesPerSecondPerSecond)) // Arm Degrees / s /s
+    //   .allowedClosedLoopError(10);
 
     mtrArm.configure(cfgArm, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
 
@@ -79,7 +81,10 @@ public class sysArm extends SubsystemBase {
     Pos = getArmPos();
     SmartDashboard.putNumber("Arm position", Pos);
     GlobalVariables.Arm_Position = Pos;
+    SmartDashboard.putNumber("Elevator from arm", GlobalVariables.Elevator_Position);
     SmartDashboard.putNumber("Roller Current", mtrLeftRoll.getOutputCurrent());
+    SmartDashboard.putBoolean("Coral Switch", coral_sw.get());
+
   }
 
   /**
@@ -101,7 +106,7 @@ public class sysArm extends SubsystemBase {
    * @param deg rotation of the arm relative the home postion in degrees
    */
   public void setArmPos(double deg){
-    ctrArm.setReference(deg, ControlType.kMAXMotionPositionControl);
+    ctrArm.setReference(deg, ControlType.kPosition);
   }
 
   /**

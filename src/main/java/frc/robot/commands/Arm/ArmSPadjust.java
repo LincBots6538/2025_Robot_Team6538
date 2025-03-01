@@ -2,44 +2,40 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.Elevator;
-
+package frc.robot.commands.Arm;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.GlobalVariables;
-import frc.robot.Constants.kElevator;
-import frc.robot.subsystems.sysElevator;
+import frc.robot.subsystems.sysArm;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorPos extends Command {
-  private sysElevator Ele;
-  private double cmd_pos;
-  private double max = kElevator.TOP;
-  private double min = kElevator.BOTTOM;
-  
+public class ArmSPadjust extends Command {
+  /** Creates a new ArmSPadjust. */
+  private sysArm Arm;
+  private double sp_lead, cur, cmd;
 
-  public ElevatorPos(sysElevator ele_subsys, double ele_pos) {
-    
-    Ele = ele_subsys;
-    cmd_pos = ele_pos;
-
-    addRequirements(Ele);
+  public ArmSPadjust(sysArm subsystem, double lead) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    Arm = subsystem;
+    sp_lead = lead;
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    if (GlobalVariables.Arm_Position < 38) max = kElevator.UPPER_LIMIT;
-    if (GlobalVariables.Arm_Position > 150) min = kElevator.LOWER_LIMIT;
-    cmd_pos = MathUtil.clamp(cmd_pos, min, max);
 
-    Ele.setPosition(cmd_pos);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    cur = Arm.getArmPos();
+    cmd = cur + sp_lead;
+
+    cmd = MathUtil.clamp(cmd, 0, 160);
+    Arm.setArmPos(cmd);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

@@ -31,8 +31,8 @@ public class ArmDrivePos extends InstantCommand {
   @Override
   public void initialize() {
 
-    if (GlobalVariables.Elevator_Position > kElevator.UPPER_LIMIT) min = 35;
-    if (GlobalVariables.Elevator_Position < kElevator.LOWER_LIMIT) max = 90;
+    if (GlobalVariables.Elevator_Position > kElevator.UPPER_LIMIT) min = 40;
+    if (GlobalVariables.Elevator_Position < kElevator.LOWER_LIMIT) max = 120;
     cmdPos = MathUtil.clamp(cmdPos, min, max);
 
     Arm.setArmPos(cmdPos);

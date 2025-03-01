@@ -5,10 +5,13 @@
 package frc.robot.commands.Auto;
 
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.drive.RCdrive;
+import frc.robot.commands.drive.FCdrive;
+import frc.robot.commands.drive.TeleOpDrive;
 import frc.robot.subsystems.sysDrive;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
@@ -16,16 +19,16 @@ import frc.robot.subsystems.sysDrive;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class LineAuto extends SequentialCommandGroup {
   /** Creates a new LineAuto. */
-
   
 
   public LineAuto(sysDrive drive) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new ParallelDeadlineGroup(
-        new WaitCommand(3),
-        new RCdrive(drive, 1, 0, 0))    
-    );
+      new SequentialCommandGroup(
+        new TeleOpDrive(drive, drive::autospeed, drive::zerospeed, drive::zerospeed),
+        new WaitCommand(2),
+        new TeleOpDrive(drive, drive::zerospeed, drive::zerospeed, drive::zerospeed)
+    ));
   }
 }

@@ -4,42 +4,36 @@
 
 package frc.robot.commands.Elevator;
 
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.GlobalVariables;
-import frc.robot.Constants.kElevator;
 import frc.robot.subsystems.sysElevator;
 
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
-public class ElevatorPos extends Command {
-  private sysElevator Ele;
-  private double cmd_pos;
-  private double max = kElevator.TOP;
-  private double min = kElevator.BOTTOM;
-  
+public class EleSPadjust extends Command {
+  private sysElevator elevator;
+  private double sp_lead, cur, cmd;
+  /** Creates a new EleSPadjust. */
+  public EleSPadjust(sysElevator subsystem, double lead) {
+    // Use addRequirements() here to declare subsystem dependencies.
+    elevator = subsystem;
+    sp_lead = lead;
 
-  public ElevatorPos(sysElevator ele_subsys, double ele_pos) {
-    
-    Ele = ele_subsys;
-    cmd_pos = ele_pos;
-
-    addRequirements(Ele);
+    addRequirements(subsystem);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {
-    if (GlobalVariables.Arm_Position < 38) max = kElevator.UPPER_LIMIT;
-    if (GlobalVariables.Arm_Position > 150) min = kElevator.LOWER_LIMIT;
-    cmd_pos = MathUtil.clamp(cmd_pos, min, max);
-
-    Ele.setPosition(cmd_pos);
-  }
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    cur = elevator.getPosition();
+    cmd = cur + sp_lead;
+
+    cmd = MathUtil.clamp(cmd, 0, 30.5);
+    elevator.setPosition(cmd);
+  }
 
   // Called once the command ends or is interrupted.
   @Override
