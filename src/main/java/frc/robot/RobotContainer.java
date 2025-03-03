@@ -37,6 +37,7 @@ import frc.robot.commands.Climber.Climb;
 import frc.robot.commands.Elevator.EleSPadjust;
 import frc.robot.commands.Elevator.ElevatorPos;
 import frc.robot.commands.Elevator.ElevatorPwr;
+import frc.robot.commands.Elevator.resetEle;
 import frc.robot.commands.drive.FCdrive;
 import frc.robot.commands.drive.RCdrive;
 import frc.robot.commands.drive.TeleOpDrive;
@@ -175,10 +176,12 @@ public class RobotContainer {
         // jyst_Manip.povDown().whileTrue(new ElevatorPwr(sys_ele, -0.2));
         // jyst_Manip.povUp().whileTrue(new ElevatorPwr(sys_ele, 0.2));
 
-        jyst_Manip.povLeft().whileTrue(new ArmSPadjust(sys_Arm, -5.0));
-        jyst_Manip.povRight().whileTrue(new ArmSPadjust(sys_Arm, 5.0));
-        jyst_Manip.povDown().whileTrue(new EleSPadjust(sys_ele, -3.0));
-        jyst_Manip.povUp().whileTrue(new EleSPadjust(sys_ele, 3.0));
+        jyst_Manip.povLeft().whileTrue(new ArmSPadjust(sys_Arm, -10.0));
+        jyst_Manip.povRight().whileTrue(new ArmSPadjust(sys_Arm, 10.0));
+        jyst_Manip.povDown().whileTrue(new EleSPadjust(sys_ele, -6.0));
+        jyst_Manip.povUp().whileTrue(new EleSPadjust(sys_ele, 6.0));
+
+        jyst_Manip.back().onTrue(new resetEle(sys_ele, sys_Arm));
 
         // Test Elevator - Moved to Test controller
         // jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));

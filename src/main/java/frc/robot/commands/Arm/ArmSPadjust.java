@@ -33,13 +33,15 @@ public class ArmSPadjust extends Command {
     cur = Arm.getArmPos();
     cmd = cur + sp_lead;
 
-    cmd = MathUtil.clamp(cmd, 0, 160);
+    cmd = MathUtil.clamp(cmd, -10, 160);
     Arm.setArmPos(cmd);
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    Arm.setArmPos(cur);
+  }
 
   // Returns true when the command should end.
   @Override

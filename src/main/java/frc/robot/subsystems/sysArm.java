@@ -96,12 +96,13 @@ public class sysArm extends SubsystemBase {
       GlobalVariables.Elevator_Min = kElevator.BOTTOM;
     }
     
-    Shuffleboard.getTab("Elevator").addNumber("Elevator Max",this::getElevatorMax);
-    Shuffleboard.getTab("Elevator").addNumber("Elevator Min",this::getElevatorMin);
-    Shuffleboard.getTab("Elevator").addNumber("Arm Position",this::getArmPos);
+    
+    // Shuffleboard.getTab("Elevator").addNumber("Elevator Max",this::getElevatorMax);
+    // Shuffleboard.getTab("Elevator").addNumber("Elevator Min",this::getElevatorMin);
+    // Shuffleboard.getTab("Elevator").addNumber("Arm Position",this::getArmPos);
 
-    Shuffleboard.getTab("Elevator").addBoolean("Coral Switch", coral_sw::get);
-    Shuffleboard.getTab("Elevator").addNumber("Roller Current", mtrLeftRoll::getOutputCurrent);
+    // Shuffleboard.getTab("Elevator").addBoolean("Coral Switch", coral_sw::get);
+    // Shuffleboard.getTab("Elevator").addNumber("Roller Current", mtrLeftRoll::getOutputCurrent);
   }
 
   /**
@@ -143,5 +144,9 @@ public class sysArm extends SubsystemBase {
   }
   public double getElevatorMin(){
     return GlobalVariables.Elevator_Min;
+  }
+  
+  public void reset(){
+    encARM.setPosition(0);
   }
 }

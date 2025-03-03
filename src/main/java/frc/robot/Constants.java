@@ -37,6 +37,10 @@ public final class Constants {
         public static final double HOME = 0; // Home is in a upwards position and angle for level 2 and 3
         public static final double TOP_OF_THE_REEF = 43; // For level 4 coral
         public static final double BALL = 160; // To remove algae
+        public static final double ARM_MAX = 160;
+        public static final double ARM_MIN = 0;
+        public static final double ARM_HIGH_LIMIT = 40;
+        public static final double ARM_LOW_LIMIT = 120;
         public static final double ROLLER_FWD = 0.3; 
         public static final double ROLLER_BACK = -0.3;
 

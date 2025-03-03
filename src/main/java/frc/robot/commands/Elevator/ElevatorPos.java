@@ -8,6 +8,7 @@ package frc.robot.commands.Elevator;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.GlobalVariables;
+import frc.robot.Constants.kArm;
 import frc.robot.Constants.kElevator;
 import frc.robot.subsystems.sysElevator;
 
@@ -31,8 +32,8 @@ public class ElevatorPos extends Command {
   public void initialize() {
     double max = kElevator.TOP;
     double min = kElevator.BOTTOM;
-    if (GlobalVariables.Arm_Position < 38) max = kElevator.UPPER_LIMIT;
-    if (GlobalVariables.Arm_Position > 150) min = kElevator.LOWER_LIMIT;
+    if (GlobalVariables.Arm_Position < kArm.ARM_HIGH_LIMIT) max = kElevator.UPPER_LIMIT;
+    if (GlobalVariables.Arm_Position > kArm.ARM_LOW_LIMIT) min = kElevator.LOWER_LIMIT;
     cmd_pos = MathUtil.clamp(cmd_pos, min, max);
 
     Ele.setPosition(cmd_pos);

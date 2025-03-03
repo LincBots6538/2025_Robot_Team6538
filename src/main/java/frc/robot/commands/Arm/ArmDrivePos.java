@@ -7,6 +7,7 @@ package frc.robot.commands.Arm;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.GlobalVariables;
+import frc.robot.Constants.kArm;
 import frc.robot.Constants.kElevator;
 import frc.robot.subsystems.sysArm;
 
@@ -28,10 +29,10 @@ public class ArmDrivePos extends InstantCommand {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    double min = 0;
-    double max = 160;
-    if (GlobalVariables.Elevator_Position > kElevator.UPPER_LIMIT) min = 40;
-    if (GlobalVariables.Elevator_Position < kElevator.LOWER_LIMIT) max = 120;
+    double min = kArm.ARM_MIN;
+    double max = kArm.ARM_MAX;
+    if (GlobalVariables.Elevator_Position > kElevator.UPPER_LIMIT) min = kArm.ARM_HIGH_LIMIT;
+    if (GlobalVariables.Elevator_Position < kElevator.LOWER_LIMIT) max = kArm.ARM_LOW_LIMIT;
     cmdPos = MathUtil.clamp(cmdPos, min, max);
 
     Arm.setArmPos(cmdPos);

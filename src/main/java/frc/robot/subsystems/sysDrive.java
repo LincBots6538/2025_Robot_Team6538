@@ -30,12 +30,12 @@ public class sysDrive extends SubsystemBase {
   private double MaxAngularRate = RotationsPerSecond.of(0.75).in(RadiansPerSecond); // 3/4 of a rotation per second max angular velocity
 
   private final SwerveRequest.FieldCentric FCdrive = new SwerveRequest.FieldCentric()
-          .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
+          .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
   private final SwerveRequest.SwerveDriveBrake brake = new SwerveRequest.SwerveDriveBrake();
   private final SwerveRequest.PointWheelsAt point = new SwerveRequest.PointWheelsAt();
   private final SwerveRequest.RobotCentric RCDrive = new SwerveRequest.RobotCentric()
-          .withDeadband(MaxSpeed * 0.05).withRotationalDeadband(MaxAngularRate * 0.05) // Add a 10% deadband
+          .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
           
 

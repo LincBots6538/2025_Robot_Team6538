@@ -17,7 +17,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
-
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.GlobalVariables;
@@ -84,7 +84,21 @@ public class sysElevator extends SubsystemBase {
     GlobalVariables.Elevator_Position = Pos;
     SmartDashboard.putNumber("elevator output", mtrLeftEle.getOutputCurrent());
     
+    if (Pos < kElevator.LOWER_LIMIT) {
+      GlobalVariables.Arm_Min = 90;
+    } else {
+      GlobalVariables.Arm_Min = 160;
+    }
+    if (Pos > kElevator.UPPER_LIMIT) {
+      GlobalVariables.Arm_Min = 40;
+    } else {
+      GlobalVariables.Arm_Min = 0;
+    }
     
+    // Shuffleboard.getTab("Elevator").addNumber("Arm Max",this::getArmMax);
+    // Shuffleboard.getTab("Elevator").addNumber("Arm Min",this::getArmMin);
+    // Shuffleboard.getTab("Elevator").addNumber("Elevator Position",this::getPosition);
+    // Shuffleboard.getTab("Elevator").addNumber("Elevator Output DC", mtrLeftEle::getAppliedOutput);
   }
 
   public void setDC(double pwr){
@@ -97,5 +111,16 @@ public class sysElevator extends SubsystemBase {
 
   public double getPosition(){
     return encEle.getPosition();
+  }
+  public double getArmMax(){
+    return GlobalVariables.Arm_Max;
+  }
+
+  public double getArmMin(){
+    return GlobalVariables.Arm_Min;
+  }
+
+  public void reset(){
+    encEle.setPosition(0);
   }
 }
