@@ -41,6 +41,8 @@ public class sysDrive extends SubsystemBase {
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
+  private Pose2d cur_pose;
+
   /** Creates a new sysDrive. */
   public sysDrive() {
     // Construct intial Powse
@@ -49,6 +51,9 @@ public class sysDrive extends SubsystemBase {
 
   @Override
   public void periodic() {
+    cur_pose = getPose();
+    SmartDashboard.putNumber("field x", cur_pose.getX());
+    SmartDashboard.putNumber("field y", cur_pose.getY());
 
   }
 
