@@ -6,6 +6,7 @@ package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.AngularAcceleration;
 import edu.wpi.first.units.measure.AngularVelocity;
@@ -26,6 +27,7 @@ public final class Constants {
     public static class kDrive {
         public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(13.0);
         public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(180.0);
+        public static final Angle STEERING_SP_LEAD = Degrees.of(15);
 
         public static final LinearVelocity MAX_AUTO_SPEED = FeetPerSecond.of(5);
         public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(6.0);

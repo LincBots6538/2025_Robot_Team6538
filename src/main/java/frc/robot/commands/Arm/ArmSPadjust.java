@@ -33,7 +33,7 @@ public class ArmSPadjust extends Command {
     cur = Arm.getArmPos();
     cmd = cur + sp_lead;
 
-    cmd = MathUtil.clamp(cmd, -10, 160);
+  //  cmd = MathUtil.clamp(cmd, -10, 160);
     Arm.setArmPos(cmd);
   }
 

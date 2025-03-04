@@ -31,7 +31,7 @@ public class EleSPadjust extends Command {
     cur = elevator.getPosition();
     cmd = cur + sp_lead;
 
-    cmd = MathUtil.clamp(cmd, 0, 30.5);
+  //  cmd = MathUtil.clamp(cmd, 0, 30.5);
     elevator.setPosition(cmd);
   }
 

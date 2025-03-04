@@ -37,7 +37,12 @@ public class sysDrive extends SubsystemBase {
   private final SwerveRequest.RobotCentric RCDrive = new SwerveRequest.RobotCentric()
           .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01) // Add a 10% deadband
           .withDriveRequestType(DriveRequestType.OpenLoopVoltage); // Use open-loop control for drive motors
-          
+     
+  // Switch TEleop Drive to this
+  private final SwerveRequest.FieldCentricFacingAngle FCdrive_Stable = new SwerveRequest.FieldCentricFacingAngle()
+      .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01)
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+  
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
 
@@ -51,7 +56,7 @@ public class sysDrive extends SubsystemBase {
 
   @Override
   public void periodic() {
-    cur_pose = getPose();
+    cur_pose = drivetrain.getState().Pose;
     SmartDashboard.putNumber("field x", cur_pose.getX());
     SmartDashboard.putNumber("field y", cur_pose.getY());
 
@@ -102,7 +107,21 @@ public class sysDrive extends SubsystemBase {
       .withVelocityY(vel_Y)
       .withRotationalRate(rot)
     );
-    SmartDashboard.putNumber("drive fwd cmd", vel_X);
+  }
+
+  /**
+   * Field Centric Control moves robot relative to starting orientation
+   * 
+   * @param vel_X - Velocity away from operator, meters per second
+   * @param vel_Y - Velocity from right to left, meters per second
+   * @param rot - Direction to face
+   */
+  public void FCdrive_facing(double vel_X, double vel_Y, Rotation2d rot){
+    drivetrain.setControl(FCdrive_Stable
+      .withVelocityX(vel_X)
+      .withVelocityY(vel_Y)
+      .withTargetDirection(rot)
+    );
   }
 
   /*
@@ -126,7 +145,7 @@ public class sysDrive extends SubsystemBase {
    * @return    The current Pose / position of the robot
    */
   public Pose2d getPose(){
-    return drivetrain.getState().Pose;
+    return cur_pose;
   }
 
   public void registerTelemetry(Telemetry logger){
