@@ -26,8 +26,8 @@ public final class Constants {
     }
     public static class kDrive {
         public static final LinearVelocity MAX_SPEED = FeetPerSecond.of(13.0);
-        public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(180.0);
-        public static final Angle STEERING_SP_LEAD = Degrees.of(15);
+        public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(360);
+        public static final Angle STEERING_SP_LEAD = Degrees.of(180);
 
         public static final LinearVelocity MAX_AUTO_SPEED = FeetPerSecond.of(5);
         public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(6.0);

@@ -41,6 +41,7 @@ public class sysDrive extends SubsystemBase {
   // Switch TEleop Drive to this
   private final SwerveRequest.FieldCentricFacingAngle FCdrive_Stable = new SwerveRequest.FieldCentricFacingAngle()
       .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01)
+      .withHeadingPID(1, 0, 0)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
   
 
