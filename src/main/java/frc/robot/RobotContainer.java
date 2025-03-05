@@ -146,10 +146,10 @@ public class RobotContainer {
 
         // Drive Controls
         // Default Command on jyst_Drivel left and right sticks
-        jyst_Drive.rightBumper().whileTrue(new RCdrive(sys_drive, 0, -1 * kDrive.JOG_SPEED.in(MetersPerSecond), 0));
-        jyst_Drive.leftBumper().whileTrue(new RCdrive(sys_drive, 0, kDrive.JOG_SPEED.in(MetersPerSecond), 0));
-        jyst_Drive.rightTrigger().whileTrue(new RCdrive(sys_drive, kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
-        jyst_Drive.leftTrigger().whileTrue(new RCdrive(sys_drive, -1 * kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
+        jyst_Drive.povRight().whileTrue(new RCdrive(sys_drive, 0, (-1 * kDrive.JOG_SPEED.in(MetersPerSecond)), 0));
+        jyst_Drive.povLeft().whileTrue(new RCdrive(sys_drive, 0, kDrive.JOG_SPEED.in(MetersPerSecond), 0));
+        jyst_Drive.povDown().whileTrue(new RCdrive(sys_drive, kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
+        jyst_Drive.povUp().whileTrue(new RCdrive(sys_drive, (-1 * kDrive.JOG_SPEED.in(MetersPerSecond)), 0, 0));
         
         jyst_Drive.start().onTrue(new reseedFC(sys_drive));
         

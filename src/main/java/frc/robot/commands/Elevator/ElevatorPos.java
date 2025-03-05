@@ -15,7 +15,7 @@ import frc.robot.subsystems.sysElevator;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class ElevatorPos extends Command {
   private sysElevator Ele;
-  private double cmd_pos;
+  private double cmd_pos, delta;
   
   
 
@@ -37,11 +37,14 @@ public class ElevatorPos extends Command {
     cmd_pos = MathUtil.clamp(cmd_pos, min, max);
 
     Ele.setPosition(cmd_pos);
+    delta = Math.abs(cmd_pos - Ele.getPosition());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    delta = Math.abs(cmd_pos - Ele.getPosition());
+  }
 
   // Called once the command ends or is interrupted.
   @Override
@@ -50,6 +53,7 @@ public class ElevatorPos extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if (delta < 1) return true;
     return false;
   }
 }
