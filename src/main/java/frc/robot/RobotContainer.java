@@ -34,6 +34,7 @@ import frc.robot.commands.Arm.ArmSetDC;
 import frc.robot.commands.Arm.Rollers;
 import frc.robot.commands.Auto.LineAuto;
 import frc.robot.commands.Climber.Climb;
+import frc.robot.commands.Elevator.CombinedEleArm;
 import frc.robot.commands.Elevator.EleSPadjust;
 import frc.robot.commands.Elevator.ElevatorPos;
 import frc.robot.commands.Elevator.ElevatorPwr;
@@ -159,17 +160,22 @@ public class RobotContainer {
         // Arm buttons
         jyst_Manip.leftBumper().onTrue(new ArmDrivePos(sys_Arm,kArm.HOME));         // Added this as set positions in constants
         jyst_Manip.rightBumper().onTrue(new ArmDrivePos(sys_Arm, kArm.TOP_OF_THE_REEF));
-        //jyst_Manip.povDown().onTrue(new ArmDrivePos(sys_Arm,kArm.BALL));
+        
         
         // Roller buttons
         jyst_Manip.leftTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));     // Like the use of the mtr_pwr Varible, lets set some values in constants
         jyst_Manip.rightTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));     // Like this where fwd is toward the elevator side of the robot
         
         // Elevator buttons
-        jyst_Manip.a().onTrue(new ElevatorPos(sys_ele, kElevator.HOME));
-        jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_2));
-        jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_3));
-        jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_4));
+        jyst_Manip.a().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.HOME, kElevator.HOME)); // Home 
+        jyst_Manip.b().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.LVL2, kElevator.LVL_2)); // Lvl 2
+        jyst_Manip.x().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.LVL3, kElevator.LVL_3)); // Lvl 3
+        jyst_Manip.y().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.LVL4, kElevator.LVL_4)); // Lvl 4
+
+        // jyst_Manip.a().onTrue(new ElevatorPos(sys_ele, kElevator.HOME));
+        // jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_2));
+        // jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_3));
+        // jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_4));
 
         // jyst_Manip.povLeft().whileTrue(new ArmSetDC(sys_Arm, -0.1));
         // jyst_Manip.povRight().whileTrue(new ArmSetDC(sys_Arm, 0.1));

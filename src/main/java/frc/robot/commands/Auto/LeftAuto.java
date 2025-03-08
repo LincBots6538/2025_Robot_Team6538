@@ -33,7 +33,7 @@ public class LeftAuto extends SequentialCommandGroup {
         Rotation2d.fromDegrees(60), 
         Inches.of(6)),
       new Stop(Drive),
-      // Deploy Arm, Raise to LVL 4
+      // Deploy Arm, Raise to LVL 4, commbinedEleArm / Adjust Coral
       // Drive to (148.817, 111.083, 60R)
       new cmdDriveTo(Drive, 
         Inches.of(148.817), 
@@ -57,7 +57,7 @@ public class LeftAuto extends SequentialCommandGroup {
         Rotation2d.fromDegrees(126), 
         Inches.of(6)),
       new Stop(Drive),
-      // Intake Coral w/detection
+      // Intake Coral w/detection, AutoIntake
       // Drive to (191.558, 105.887, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(191.558), 
