@@ -111,6 +111,14 @@ public class sysDrive extends SubsystemBase {
     );
   }
 
+  public void stop(){
+    drivetrain.setControl(FCdrive
+      .withVelocityX(0)
+      .withVelocityY(0)
+      .withRotationalRate(0)
+    );
+  }
+
   /**
    * Field Centric Control moves robot relative to starting orientation
    * 

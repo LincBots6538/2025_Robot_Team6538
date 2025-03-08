@@ -4,6 +4,7 @@
 
 package frc.robot.commands.drive;
 
+import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.MetersPerSecond;
 
@@ -11,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.kDrive;
@@ -21,10 +23,13 @@ import frc.robot.subsystems.sysDrive;
 public class cmdDriveTo extends Command {
   private sysDrive Drive;
   private double MAX_SPEED = kDrive.MAX_AUTO_SPEED.in(MetersPerSecond);
+  private double kp = 1.0;
   private double xVec, yVec, dis, goal, pterm, drot, rot_cmd;
   private Pose2d current, target, delta;
 
-  /** Creates a new cmdDriveTo. */
+  /** Creates a new cmdDriveTo.
+   * Requires a stop cmd to Stop
+   */
   public cmdDriveTo(sysDrive subsystem, Distance xWayPoint, Distance yWayPoint, Rotation2d Facing, Distance StopWithin) {
     // Use addRequirements() here to declare subsystem dependencies.
     Drive = subsystem;
@@ -48,14 +53,17 @@ public class cmdDriveTo extends Command {
 
     dis = delta.getTranslation().getDistance(Translation2d.kZero);
 
-    pterm = MathUtil.clamp(dis / 4, -1, 1);
+    pterm = MathUtil.clamp(kp*dis, -1, 1);
     xVec = MAX_SPEED * pterm * delta.getX()/dis;
     yVec = MAX_SPEED * pterm * delta.getY()/dis;
 
-    // rotation
-    drot = delta.getRotation().getRadians();
-    rot_cmd = 3 * MathUtil.clamp(drot/3, -1, 1);;
-    Drive.FCdrive(yVec, xVec, rot_cmd);
+    // // rotation
+    // drot = delta.getRotation().getRadians();
+    // rot_cmd = 3 * MathUtil.clamp(drot/3, -1, 1);;
+    // Drive.FCdrive(yVec, xVec, rot_cmd);
+
+    // Rotation
+    Drive.FCdrive_facing(xVec, yVec, target.getRotation());
   }
 
   // Called once the command ends or is interrupted.
@@ -65,12 +73,8 @@ public class cmdDriveTo extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if (dis < goal){
-      if (goal < 0.6) Drive.point(target.getRotation().getDegrees());
-      return true;
-    }
-    else{
+    if (dis < goal) return true;
+  
     return false;
-    }
   }
 }
