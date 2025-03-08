@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.units.measure.Angle;
 import edu.wpi.first.units.measure.Distance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.kDrive;
 import frc.robot.subsystems.sysDrive;
@@ -57,13 +58,14 @@ public class cmdDriveTo extends Command {
     xVec = MAX_SPEED * pterm * delta.getX()/dis;
     yVec = MAX_SPEED * pterm * delta.getY()/dis;
 
-    // // rotation
-    // drot = delta.getRotation().getRadians();
-    // rot_cmd = 3 * MathUtil.clamp(drot/3, -1, 1);;
-    // Drive.FCdrive(yVec, xVec, rot_cmd);
+    // rotation
+    drot = delta.getRotation().getRadians();
+    rot_cmd = 3 * MathUtil.clamp(drot/3, -1, 1);;
+    Drive.FCdrive(yVec, xVec, rot_cmd);
 
-    // Rotation
-    Drive.FCdrive_facing(xVec, yVec, target.getRotation());
+    // // Rotation
+    // Drive.FCdrive_facing(xVec, yVec, target.getRotation());
+    // SmartDashboard.putNumber("Rotation SP", target.getRotation().getDegrees());
   }
 
   // Called once the command ends or is interrupted.

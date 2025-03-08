@@ -42,7 +42,7 @@ public class sysDrive extends SubsystemBase {
   // Switch TEleop Drive to this
   private final SwerveRequest.FieldCentricFacingAngle FCdrive_Stable = new SwerveRequest.FieldCentricFacingAngle()
       .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01)
-      .withHeadingPID(1, 0, 0)
+      .withHeadingPID(5, 0, 0)
       .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
   
 
@@ -147,6 +147,7 @@ public class sysDrive extends SubsystemBase {
       .withVelocityY(vel_Y)
       .withRotationalRate(rot)  
     );
+    SmartDashboard.putNumber("RC Drive Request", vel_X);
   }
 
   /**

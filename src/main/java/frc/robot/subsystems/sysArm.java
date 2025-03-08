@@ -100,7 +100,9 @@ public class sysArm extends SubsystemBase {
     // Shuffleboard.getTab("Elevator").addNumber("Elevator Max",this::getElevatorMax);
     // Shuffleboard.getTab("Elevator").addNumber("Elevator Min",this::getElevatorMin);
     // Shuffleboard.getTab("Elevator").addNumber("Arm Position",this::getArmPos);
-
+    SmartDashboard.putNumber("Arm Pos", Pos);
+    SmartDashboard.putBoolean("Coral Sw", coral_sw.get());
+    SmartDashboard.putNumber("intake current", mtrLeftRoll.getOutputCurrent());
     // Shuffleboard.getTab("Elevator").addBoolean("Coral Switch", coral_sw::get);
     // Shuffleboard.getTab("Elevator").addNumber("Roller Current", mtrLeftRoll::getOutputCurrent);
   }
@@ -114,7 +116,7 @@ public class sysArm extends SubsystemBase {
   }
 
   public boolean RollerLoaded(){
-    if (mtrLeftRoll.getOutputCurrent() > 1 )  return true;
+    if (mtrLeftRoll.getOutputCurrent() > 10 )  return true;
     return false;
   }
 

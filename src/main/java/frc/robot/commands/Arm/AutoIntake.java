@@ -20,7 +20,7 @@ public class AutoIntake extends Command {
     
     // end command
     PosCoral = new SequentialCommandGroup(
-      new WaitCommand(.1),
+      new WaitCommand(.5),
       new Rollers(Arm, 0));
 
     // Use addRequirements() here to declare subsystem dependencies.

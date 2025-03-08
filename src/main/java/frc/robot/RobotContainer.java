@@ -32,6 +32,8 @@ import frc.robot.commands.Arm.ArmDrivePos;
 import frc.robot.commands.Arm.ArmSPadjust;
 import frc.robot.commands.Arm.ArmSetDC;
 import frc.robot.commands.Arm.Rollers;
+import frc.robot.commands.Arm.AutoIntake;
+
 import frc.robot.commands.Auto.LineAuto;
 import frc.robot.commands.Climber.Climb;
 import frc.robot.commands.Elevator.CombinedEleArm;
@@ -43,6 +45,9 @@ import frc.robot.commands.drive.FCdrive;
 import frc.robot.commands.drive.RCdrive;
 import frc.robot.commands.drive.TeleOpDrive;
 import frc.robot.commands.drive.reseedFC;
+import frc.robot.commands.drive.cmdDriveTo;
+import frc.robot.commands.drive.Stop;
+import frc.robot.commands.Auto.LeftAuto;
 import frc.robot.generated.TunerConstants;
 
 import frc.robot.subsystems.sysDrive;
@@ -158,13 +163,13 @@ public class RobotContainer {
         sys_drive.registerTelemetry(logger);
         
         // Arm buttons
-        jyst_Manip.leftBumper().onTrue(new ArmDrivePos(sys_Arm,kArm.HOME));         // Added this as set positions in constants
-        jyst_Manip.rightBumper().onTrue(new ArmDrivePos(sys_Arm, kArm.TOP_OF_THE_REEF));
+        jyst_Manip.leftBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));         // Added this as set positions in constants
+        jyst_Manip.rightBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));
         
         
         // Roller buttons
-        jyst_Manip.leftTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));     // Like the use of the mtr_pwr Varible, lets set some values in constants
-        jyst_Manip.rightTrigger().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));     // Like this where fwd is toward the elevator side of the robot
+        //jyst_Manip.leftTrigger().whileTrue(new );     // Like the use of the mtr_pwr Varible, lets set some values in constants
+        jyst_Manip.rightTrigger().whileTrue(new AutoIntake(sys_Arm));     // Like this where fwd is toward the elevator side of the robot
         
         // Elevator buttons
         jyst_Manip.a().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.HOME, kElevator.HOME)); // Home 
@@ -220,13 +225,19 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-       //return new TeleOpDrive(sys_drive, sys_drive::autospeed, sys_drive::zerospeed, sys_drive::zerospeed);
-       //return new LineAuto(sys_drive);
-       return new SequentialCommandGroup(
-        new ParallelDeadlineGroup(
-        new WaitCommand(2),
-        new TeleOpDrive(sys_drive, sys_drive::autospeed, sys_drive::zerospeed, sys_drive::zerospeed)),
-        new TeleOpDrive(sys_drive, sys_drive::zerospeed, sys_drive::zerospeed, sys_drive::zerospeed)
-         );
+       
+    //    return new SequentialCommandGroup(
+    //     new ParallelDeadlineGroup(
+    //     new WaitCommand(2),
+    //     new TeleOpDrive(sys_drive, sys_drive::autospeed, sys_drive::zerospeed, sys_drive::zerospeed)),
+    //     new TeleOpDrive(sys_drive, sys_drive::zerospeed, sys_drive::zerospeed, sys_drive::zerospeed)
+    //      );
+
+        return new SequentialCommandGroup( 
+        new cmdDriveTo(sys_drive, Inches.of(36), Inches.of(36), Rotation2d.fromDegrees(60), Inches.of(6)),
+        new Stop(sys_drive));
+
+        //return new LeftAuto(sys_drive, sys_Arm, sys_ele);
+
     }
 }

@@ -29,6 +29,7 @@ public class sysClimber extends SubsystemBase {
 
   // Configuration Objects
   private TalonFXConfiguration mtrCfg = new TalonFXConfiguration();
+  private TalonFXConfiguration mtrCfg_right = new TalonFXConfiguration();
   
   // Closed Loop
   private PositionVoltage ClimbRequest = new PositionVoltage(0);
@@ -54,6 +55,23 @@ public class sysClimber extends SubsystemBase {
       .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
       .withSensorToMechanismRatio(kClimber.RATIO);
 
+    // Set Motor Controller Parameters
+    mtrCfg_right.Slot0
+      .withKS(0)
+      .withKP(kClimber.KP)
+      .withKI(0)
+      .withKD(0);
+    mtrCfg_right.Voltage
+        .withPeakForwardVoltage(Volts.of(8))
+        .withPeakReverseVoltage(Volts.of(0));   // Ratch mech used in gearbox, backdriving is not possible
+    mtrCfg_right.CurrentLimits
+      .withStatorCurrentLimit(Amps.of(kClimber.CURRENT_LIMIT))
+      .withStatorCurrentLimitEnable(true);
+    mtrCfg_right.MotorOutput
+      .withInverted(InvertedValue.CounterClockwise_Positive);
+    mtrCfg_right.Feedback
+      .withFeedbackSensorSource(FeedbackSensorSourceValue.RotorSensor)
+      .withSensorToMechanismRatio(kClimber.RATIO);
 
     // Apply Configuration, Set Postion to zero
     mtrLeftClimb.getConfigurator().apply(mtrCfg);
@@ -63,7 +81,8 @@ public class sysClimber extends SubsystemBase {
       .withLimitReverseMotion(true);
 
     // Set Right Motor to follow Left Motor, but inverted
-    mtrRightClimb.setControl(new Follower(mtrLeftClimb.getDeviceID(), true));
+    mtrRightClimb.getConfigurator().apply(mtrCfg_right);
+    mtrRightClimb.setPosition(0);
 
     
   }
@@ -81,6 +100,7 @@ public class sysClimber extends SubsystemBase {
    */
   public void setClimbPos(Angle cmdPos){
     mtrLeftClimb.setControl(ClimbRequest.withPosition(cmdPos));
+    mtrRightClimb.setControl(ClimbRequest.withPosition(cmdPos));
   }
 
   /**
@@ -93,9 +113,11 @@ public class sysClimber extends SubsystemBase {
 
   public void resetPos(){
     mtrLeftClimb.setPosition(0);
+    mtrRightClimb.setPosition(0);
   }
 
   public void stop(){
     mtrLeftClimb.stopMotor();
+    mtrRightClimb.stopMotor();
   }
 }

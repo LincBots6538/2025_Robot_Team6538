@@ -24,12 +24,14 @@ public class RCdrive extends Command {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    Drive.RCDrive(xVel, yVel, rot_cmd);
+    // Drive.RCDrive(xVel, yVel, rot_cmd);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    Drive.RCDrive(xVel, yVel, rot_cmd);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

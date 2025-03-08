@@ -29,8 +29,8 @@ public final class Constants {
         public static final AngularVelocity TURNING_RATE = DegreesPerSecond.of(360);
         public static final Angle STEERING_SP_LEAD = Degrees.of(180);
 
-        public static final LinearVelocity MAX_AUTO_SPEED = FeetPerSecond.of(5);
-        public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(6.0);
+        public static final LinearVelocity MAX_AUTO_SPEED = FeetPerSecond.of(3.0);
+        public static final LinearVelocity JOG_SPEED = FeetPerSecond.of(3.0);
         
     }
 
@@ -78,7 +78,7 @@ public final class Constants {
         public static final int LEFT_CANID = 2;
         public static final int RIGHT_CANID = 3;
         
-        public static final double KP = 0.06;
+        public static final double KP = 0.15;
         public static final double KI = 0.0;
         public static final double KD = 0.0;
         public static final LinearVelocity MAX_SPEED = InchesPerSecond.of(20);
@@ -93,12 +93,12 @@ public final class Constants {
     public static class kClimber {
     
         public static final double RATIO = 27.0 * 3.0;
-        public static final double KP = 10.0;
+        public static final double KP = 20.0;
         public static final double CURRENT_LIMIT = 60;
         public static final int LEFT_CANID = 8;
         public static final int RIGHT_CANID = 9;
 
-        public static final Angle CLIMB_POS = Degrees.of(200);
+        public static final Angle CLIMB_POS = Degrees.of(180);
 
     }
 }
