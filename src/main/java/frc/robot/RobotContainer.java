@@ -14,6 +14,7 @@ import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.subsystems.CommandSwerveDrivetrain;
 import frc.robot.subsystems.sysArm;
 import frc.robot.subsystems.sysClimber;
@@ -32,6 +33,7 @@ import frc.robot.commands.Arm.ArmDrivePos;
 import frc.robot.commands.Arm.ArmSPadjust;
 import frc.robot.commands.Arm.ArmSetDC;
 import frc.robot.commands.Arm.Rollers;
+import frc.robot.commands.Arm.setRollers;
 import frc.robot.commands.Arm.AutoIntake;
 
 import frc.robot.commands.Auto.LineAuto;
@@ -111,7 +113,8 @@ public class RobotContainer {
         dsh_selAuto.setDefaultOption("Line Auto", new LineAuto(sys_drive));
         dsh_selAuto.addOption("Do Nothing", null);
 
-        Shuffleboard.getTab("Auto").add(dsh_selAuto);
+        //Shuffleboard.getTab("Auto").add(dsh_selAuto);
+        SmartDashboard.putData(dsh_selAuto);
 
         configureBindings();
     }
@@ -163,13 +166,23 @@ public class RobotContainer {
         sys_drive.registerTelemetry(logger);
         
         // Arm buttons
-        jyst_Manip.leftBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));         // Added this as set positions in constants
+        jyst_Manip.leftBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_BACK));        
         jyst_Manip.rightBumper().whileTrue(new Rollers(sys_Arm, kArm.ROLLER_FWD));
         
-        
         // Roller buttons
-        //jyst_Manip.leftTrigger().whileTrue(new );     // Like the use of the mtr_pwr Varible, lets set some values in constants
-        jyst_Manip.rightTrigger().whileTrue(new AutoIntake(sys_Arm));     // Like this where fwd is toward the elevator side of the robot
+        // Position Coral
+        jyst_Manip.leftTrigger().onTrue(new SequentialCommandGroup(
+            new setRollers(sys_Arm, kArm.ROLLER_BACK),
+            new WaitCommand(0.1),
+            new setRollers(sys_Arm, 0)
+        ));
+        // Auto Intake
+        jyst_Manip.rightTrigger().whileTrue(new SequentialCommandGroup(
+            new setRollers(sys_Arm, kArm.ROLLER_FWD),
+            new WaitCommand(0.1),
+            new AutoIntake(sys_Arm),
+            new setRollers(sys_Arm, 0)
+        ));
         
         // Elevator buttons
         jyst_Manip.a().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.HOME, kElevator.HOME)); // Home 
@@ -177,26 +190,14 @@ public class RobotContainer {
         jyst_Manip.x().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.LVL3, kElevator.LVL_3)); // Lvl 3
         jyst_Manip.y().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.LVL4, kElevator.LVL_4)); // Lvl 4
 
-        // jyst_Manip.a().onTrue(new ElevatorPos(sys_ele, kElevator.HOME));
-        // jyst_Manip.b().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_2));
-        // jyst_Manip.x().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_3));
-        // jyst_Manip.y().onTrue(new ElevatorPos(sys_ele, kElevator.LVL_4));
-
-        // jyst_Manip.povLeft().whileTrue(new ArmSetDC(sys_Arm, -0.1));
-        // jyst_Manip.povRight().whileTrue(new ArmSetDC(sys_Arm, 0.1));
-        // jyst_Manip.povDown().whileTrue(new ElevatorPwr(sys_ele, -0.2));
-        // jyst_Manip.povUp().whileTrue(new ElevatorPwr(sys_ele, 0.2));
-
+        // Manual Elevator
         jyst_Manip.povLeft().whileTrue(new ArmSPadjust(sys_Arm, -10.0));
         jyst_Manip.povRight().whileTrue(new ArmSPadjust(sys_Arm, 10.0));
         jyst_Manip.povDown().whileTrue(new EleSPadjust(sys_ele, -6.0));
         jyst_Manip.povUp().whileTrue(new EleSPadjust(sys_ele, 6.0));
 
+        // Reset Elevator
         jyst_Manip.back().onTrue(new resetEle(sys_ele, sys_Arm));
-
-        // Test Elevator - Moved to Test controller
-        // jyst_Manip.povLeft().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
-        // jyst_Manip.povRight().whileTrue(new ElevatorPwr(sys_Ele, MaxSpeed));
 
         // Climb Buttons
         jyst_Manip.start().whileTrue(new Climb(sys_climb, kClimber.CLIMB_POS));     // Hold button to climb
@@ -234,7 +235,7 @@ public class RobotContainer {
     //      );
 
         return new SequentialCommandGroup( 
-        new cmdDriveTo(sys_drive, Inches.of(36), Inches.of(36), Rotation2d.fromDegrees(60), Inches.of(6)),
+        new cmdDriveTo(sys_drive, Inches.of(36), Inches.of(36), Rotation2d.fromDegrees(60), true),
         new Stop(sys_drive));
 
         //return new LeftAuto(sys_drive, sys_Arm, sys_ele);

@@ -27,16 +27,18 @@ public class cmdDriveTo extends Command {
   private double kp = 1.0;
   private double xVec, yVec, dis, goal, pterm, drot, rot_cmd;
   private Pose2d current, target, delta;
+  private boolean StopAtEnd;
 
   /** Creates a new cmdDriveTo.
    * Requires a stop cmd to Stop
    */
-  public cmdDriveTo(sysDrive subsystem, Distance xWayPoint, Distance yWayPoint, Rotation2d Facing, Distance StopWithin) {
+  public cmdDriveTo(sysDrive subsystem, Distance xWayPoint, Distance yWayPoint, Rotation2d Facing, Boolean endStop) {
     // Use addRequirements() here to declare subsystem dependencies.
     Drive = subsystem;
     target = new Pose2d(xWayPoint, yWayPoint, Facing);
-    goal = StopWithin.in(Meters);
-    
+    goal = 1.0; // Distance to run next command, if endstop = false
+    StopAtEnd = endStop;
+    if (StopAtEnd) goal = 0.025; // Accuracy if stoping
 
     addRequirements(subsystem);
   }
@@ -58,19 +60,22 @@ public class cmdDriveTo extends Command {
     xVec = MAX_SPEED * pterm * delta.getX()/dis;
     yVec = MAX_SPEED * pterm * delta.getY()/dis;
 
-    // rotation
-    drot = delta.getRotation().getRadians();
-    rot_cmd = 3 * MathUtil.clamp(drot/3, -1, 1);;
-    Drive.FCdrive(yVec, xVec, rot_cmd);
+    // // rotation
+    // drot = delta.getRotation().getRadians();
+    // rot_cmd = 3 * MathUtil.clamp(drot/3, -1, 1);;
+    // Drive.FCdrive(yVec, xVec, rot_cmd);
 
-    // // Rotation
-    // Drive.FCdrive_facing(xVec, yVec, target.getRotation());
-    // SmartDashboard.putNumber("Rotation SP", target.getRotation().getDegrees());
+    // Rotation
+    Drive.FCdrive_facing(xVec, yVec, target.getRotation());
+    
+    SmartDashboard.putNumber("Rotation SP", target.getRotation().getDegrees());
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    if (StopAtEnd) Drive.stop();
+  }
 
   // Returns true when the command should end.
   @Override

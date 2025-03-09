@@ -116,8 +116,12 @@ public class sysArm extends SubsystemBase {
   }
 
   public boolean RollerLoaded(){
-    if (mtrLeftRoll.getOutputCurrent() > 10 )  return true;
+    if (mtrLeftRoll.getOutputCurrent() > kArm.ROLLER_DETECTION_CURRENT )  return true;
     return false;
+  }
+
+  public boolean coralSW(){
+    return coral_sw.get();
   }
 
   /**

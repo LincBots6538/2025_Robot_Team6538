@@ -5,12 +5,9 @@
 package frc.robot.commands.Auto;
 
 
-import java.util.function.DoubleSupplier;
-
 import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.drive.FCdrive;
 import frc.robot.commands.drive.TeleOpDrive;
 import frc.robot.subsystems.sysDrive;
 
@@ -25,10 +22,12 @@ public class LineAuto extends SequentialCommandGroup {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new SequentialCommandGroup(
-        new TeleOpDrive(drive, drive::autospeed, drive::zerospeed, drive::zerospeed),
+        new SequentialCommandGroup(
+        new ParallelDeadlineGroup(
         new WaitCommand(2),
+        new TeleOpDrive(drive, drive::autospeed, drive::zerospeed, drive::zerospeed)),
         new TeleOpDrive(drive, drive::zerospeed, drive::zerospeed, drive::zerospeed)
-    ));
+         )
+    );
   }
 }

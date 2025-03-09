@@ -43,7 +43,8 @@ public class sysDrive extends SubsystemBase {
   private final SwerveRequest.FieldCentricFacingAngle FCdrive_Stable = new SwerveRequest.FieldCentricFacingAngle()
       .withDeadband(MaxSpeed * 0.01).withRotationalDeadband(MaxAngularRate * 0.01)
       .withHeadingPID(5, 0, 0)
-      .withDriveRequestType(DriveRequestType.OpenLoopVoltage);
+      .withDriveRequestType(DriveRequestType.OpenLoopVoltage)
+      .withDesaturateWheelSpeeds(true);
   
 
   public final CommandSwerveDrivetrain drivetrain = TunerConstants.createDrivetrain();
@@ -61,6 +62,8 @@ public class sysDrive extends SubsystemBase {
     cur_pose = drivetrain.getState().Pose;
     SmartDashboard.putNumber("field x", cur_pose.getX());
     SmartDashboard.putNumber("field y", cur_pose.getY());
+    SmartDashboard.putNumber("field angle", cur_pose.getRotation().getDegrees());
+    SmartDashboard.putBoolean("Valid Field Data", drivetrain.isOdometryValid());
 
   }
 
@@ -91,7 +94,7 @@ public class sysDrive extends SubsystemBase {
    * 
    * @param deg   Direction to face
    */
-  public void point(Double deg){
+  public void point(double deg){
     Rotation2d rotation = Rotation2d.fromDegrees(deg);
     drivetrain.setControl(point.withModuleDirection(rotation));
   }

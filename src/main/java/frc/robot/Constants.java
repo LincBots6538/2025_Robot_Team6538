@@ -51,6 +51,7 @@ public final class Constants {
 
         public static final int ARM_CURRENT_LIMIT = 20;
         public static final int ROLLER_CURRENT_LIMIT = 10;
+        public static final int ROLLER_DETECTION_CURRENT =3;
 
         public static final int LEFT_ROLLER_CADID = 4;
         public static final int RIGHT_ROLLER_CANDID = 5;
