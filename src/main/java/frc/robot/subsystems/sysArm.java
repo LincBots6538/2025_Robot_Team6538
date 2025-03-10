@@ -41,8 +41,8 @@ public class sysArm extends SubsystemBase {
 
   private DigitalInput coral_sw = new DigitalInput(0);
   
-  private SparkClosedLoopController ctrArm;
-  private RelativeEncoder encARM;
+  private SparkClosedLoopController ctrArm, ctrRoll;
+  private RelativeEncoder encARM, encRoll;
 
   private double Pos;
 
@@ -64,7 +64,11 @@ public class sysArm extends SubsystemBase {
 
     cfgLeftRoll.inverted(true)
       .idleMode(IdleMode.kBrake)
-      .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT);
+      .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT)
+      .encoder.positionConversionFactor(100).velocityConversionFactor(100);
+    cfgLeftRoll.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+      .pid(0.1, 0, 0);
+      
     cfgRightRoll.idleMode(IdleMode.kBrake)
       .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT)
       .follow(mtrLeftRoll, true);
@@ -75,6 +79,10 @@ public class sysArm extends SubsystemBase {
     ctrArm = mtrArm.getClosedLoopController();
     encARM = mtrArm.getEncoder();
     encARM.setPosition(0);
+
+    ctrRoll = mtrLeftRoll.getClosedLoopController();
+    encRoll = mtrLeftRoll.getEncoder();
+    encRoll.setPosition(0);
     
     Pos = getArmPos();
   }
