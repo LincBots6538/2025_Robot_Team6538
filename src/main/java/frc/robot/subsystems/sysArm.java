@@ -69,9 +69,11 @@ public class sysArm extends SubsystemBase {
     cfgLeftRoll.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(0.1, 0, 0);
       
-    cfgRightRoll.idleMode(IdleMode.kBrake)
+    cfgRightRoll.inverted(false)
+      .idleMode(IdleMode.kBrake)
       .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT)
-      .follow(mtrLeftRoll, true);
+      //.follow(mtrLeftRoll, true)
+      ;
 
     mtrLeftRoll.configure(cfgLeftRoll, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     mtrRightRoll.configure(cfgRightRoll, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -121,6 +123,7 @@ public class sysArm extends SubsystemBase {
    */
   public void setRollers(double pwr){
     mtrLeftRoll.set(pwr);
+    mtrRightRoll.set(-pwr);
   }
 
   public boolean RollerLoaded(){

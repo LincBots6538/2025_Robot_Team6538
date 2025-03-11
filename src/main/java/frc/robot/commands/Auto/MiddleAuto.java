@@ -21,7 +21,7 @@ public class MiddleAuto extends SequentialCommandGroup {
   public MiddleAuto(sysDrive Drive) {
     
     // Set Starting Position
-    Drive.setPose(Inches.of(60), Inches.of(18.25), Degrees.of(0));
+    Drive.setPose(Inches.of(60.75), Inches.of(158.5), Degrees.of(0));
     addCommands(
       // Drive to left side of closest reef face
       new cmdDriveTo(Drive, 

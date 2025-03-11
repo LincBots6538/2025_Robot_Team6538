@@ -37,6 +37,7 @@ import frc.robot.commands.Arm.setRollers;
 import frc.robot.commands.Arm.AutoIntake;
 
 import frc.robot.commands.Auto.LineAuto;
+import frc.robot.commands.Auto.MiddleAuto;
 import frc.robot.commands.Climber.Climb;
 import frc.robot.commands.Elevator.CombinedEleArm;
 import frc.robot.commands.Elevator.EleSPadjust;
@@ -50,6 +51,7 @@ import frc.robot.commands.drive.reseedFC;
 import frc.robot.commands.drive.cmdDriveTo;
 import frc.robot.commands.drive.Stop;
 import frc.robot.commands.Auto.LeftAuto;
+import frc.robot.commands.Auto.*;
 import frc.robot.generated.TunerConstants;
 
 import frc.robot.subsystems.sysDrive;
@@ -157,8 +159,8 @@ public class RobotContainer {
         // Default Command on jyst_Drivel left and right sticks
         jyst_Drive.povRight().whileTrue(new RCdrive(sys_drive, 0, (-1 * kDrive.JOG_SPEED.in(MetersPerSecond)), 0));
         jyst_Drive.povLeft().whileTrue(new RCdrive(sys_drive, 0, kDrive.JOG_SPEED.in(MetersPerSecond), 0));
-        jyst_Drive.povDown().whileTrue(new RCdrive(sys_drive, kDrive.JOG_SPEED.in(MetersPerSecond), 0, 0));
-        jyst_Drive.povUp().whileTrue(new RCdrive(sys_drive, (-1 * kDrive.JOG_SPEED.in(MetersPerSecond)), 0, 0));
+        jyst_Drive.povDown().whileTrue(new RCdrive(sys_drive, (-1*kDrive.JOG_SPEED.in(MetersPerSecond)), 0, 0));
+        jyst_Drive.povUp().whileTrue(new RCdrive(sys_drive, (1 * kDrive.JOG_SPEED.in(MetersPerSecond)), 0, 0));
         
         jyst_Drive.start().onTrue(new reseedFC(sys_drive));
         
@@ -234,11 +236,11 @@ public class RobotContainer {
     //     new TeleOpDrive(sys_drive, sys_drive::zerospeed, sys_drive::zerospeed, sys_drive::zerospeed)
     //      );
 
-        return new SequentialCommandGroup( 
-        new cmdDriveTo(sys_drive, Inches.of(36), Inches.of(36), Rotation2d.fromDegrees(60), true),
-        new Stop(sys_drive));
+        // return new SequentialCommandGroup( 
+        // new cmdDriveTo(sys_drive, Inches.of(48), Inches.of(48), Rotation2d.fromDegrees(120), true),
+        // new Stop(sys_drive));
 
-        //return new LeftAuto(sys_drive, sys_Arm, sys_ele);
+        return new MiddleAuto(sys_drive);
 
     }
 }
