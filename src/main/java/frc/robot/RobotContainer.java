@@ -67,7 +67,6 @@ public class RobotContainer {
     private sysDrive sys_drive = new sysDrive();
     // Arm System
     private sysArm sys_Arm = new sysArm();
-    private double mtr_pwr; // Replaced with constant value
     // Elevator System
     private sysElevator sys_ele = new sysElevator();
     // Climber System
@@ -113,6 +112,9 @@ public class RobotContainer {
 
         // Auto Chooser
         dsh_selAuto.setDefaultOption("Line Auto", new LineAuto(sys_drive));
+        dsh_selAuto.addOption("Left Auto", new LeftAuto(sys_drive, sys_Arm, sys_ele));
+        dsh_selAuto.addOption("Middle Auto", new MiddleAuto(sys_drive, sys_Arm, sys_ele));
+        dsh_selAuto.addOption("Rigth Auto", null);
         dsh_selAuto.addOption("Do Nothing", null);
 
         //Shuffleboard.getTab("Auto").add(dsh_selAuto);
@@ -240,7 +242,7 @@ public class RobotContainer {
         // new cmdDriveTo(sys_drive, Inches.of(48), Inches.of(48), Rotation2d.fromDegrees(120), true),
         // new Stop(sys_drive));
 
-        return new MiddleAuto(sys_drive);
+        return dsh_selAuto.getSelected();
 
     }
 }

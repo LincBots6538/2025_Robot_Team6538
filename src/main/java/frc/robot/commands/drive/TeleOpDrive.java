@@ -57,7 +57,7 @@ public class TeleOpDrive extends Command {
     rot_spd = Math.signum(rot_spd) * Math.abs(Math.pow(rot_spd, 2));        // Square the input
     rot_spd = -1.0 * rot_spd * kDrive.TURNING_RATE.in(RadiansPerSecond);      // Invert Joystick value, Scale to Max Velocity
 
-    //sys_drive.FCdrive(fwd_vel, left_vel, rot_spd);
+    sys_drive.FCdrive(fwd_vel, left_vel, rot_spd);
     
     // Facing direction
     rot_cur = sys_drive.getPose().getRotation();
@@ -66,7 +66,7 @@ public class TeleOpDrive extends Command {
     rot_fac = -1.0 * rot_fac * kDrive.STEERING_SP_LEAD.in(Degrees);      // Invert Joystick value, Scale to Max Velocity
     rot_cmd = rot_cur.plus(Rotation2d.fromDegrees(rot_fac));
 
-    sys_drive.FCdrive_facing(fwd_vel, left_vel, rot_cmd);
+    //sys_drive.FCdrive_facing(fwd_vel, left_vel, rot_cmd);
 
     SmartDashboard.putNumber("jyst raw", rot_jyst.getAsDouble());
     SmartDashboard.putNumber("rot adder", rot_fac);

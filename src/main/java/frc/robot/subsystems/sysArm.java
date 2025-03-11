@@ -65,15 +65,14 @@ public class sysArm extends SubsystemBase {
     cfgLeftRoll.inverted(true)
       .idleMode(IdleMode.kBrake)
       .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT)
-      .encoder.positionConversionFactor(100).velocityConversionFactor(100);
+      .encoder.positionConversionFactor(kArm.ROLLER_MTR_TO_IN).velocityConversionFactor(kArm.ROLLER_MTR_TO_IN);
     cfgLeftRoll.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(0.1, 0, 0);
       
     cfgRightRoll.inverted(false)
       .idleMode(IdleMode.kBrake)
       .smartCurrentLimit(kArm.ROLLER_CURRENT_LIMIT)
-      //.follow(mtrLeftRoll, true)
-      ;
+      .follow(mtrLeftRoll, true);
 
     mtrLeftRoll.configure(cfgLeftRoll, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     mtrRightRoll.configure(cfgRightRoll, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -93,28 +92,10 @@ public class sysArm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Pos = getArmPos();
-    GlobalVariables.Arm_Position = Pos;
 
-    if (Pos < 40) {
-      GlobalVariables.Elevator_Max = kElevator.UPPER_LIMIT;
-    } else {
-      GlobalVariables.Elevator_Max = kElevator.TOP;
-    }
-    if (Pos > 90) {
-      GlobalVariables.Elevator_Min = kElevator.LOWER_LIMIT;
-    } else {
-      GlobalVariables.Elevator_Min = kElevator.BOTTOM;
-    }
-    
-    
-    // Shuffleboard.getTab("Elevator").addNumber("Elevator Max",this::getElevatorMax);
-    // Shuffleboard.getTab("Elevator").addNumber("Elevator Min",this::getElevatorMin);
-    // Shuffleboard.getTab("Elevator").addNumber("Arm Position",this::getArmPos);
     SmartDashboard.putNumber("Arm Pos", Pos);
     SmartDashboard.putBoolean("Coral Sw", coral_sw.get());
     SmartDashboard.putNumber("intake current", mtrLeftRoll.getOutputCurrent());
-    // Shuffleboard.getTab("Elevator").addBoolean("Coral Switch", coral_sw::get);
-    // Shuffleboard.getTab("Elevator").addNumber("Roller Current", mtrLeftRoll::getOutputCurrent);
   }
 
   /**
@@ -123,7 +104,19 @@ public class sysArm extends SubsystemBase {
    */
   public void setRollers(double pwr){
     mtrLeftRoll.set(pwr);
-    mtrRightRoll.set(-pwr);
+  }
+
+  /**
+   * Set the Rollers to move a specific distance
+   * @param inches
+   */
+  public void setRollersDist(double inches){
+    encRoll.setPosition(0);
+    ctrRoll.setReference(inches, ControlType.kPosition);
+  }
+
+  public double getRollerPos(){
+    return encRoll.getPosition();
   }
 
   public boolean RollerLoaded(){

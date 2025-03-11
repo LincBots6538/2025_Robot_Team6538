@@ -62,6 +62,10 @@ public final class Constants {
         public static final AngularVelocity MAX_SPEED = DegreesPerSecond.of(180);
         public static final AngularAcceleration MAX_ACCEL = MAX_SPEED.div(Seconds.of(1));
         public static final Angle SP_ERROR = Degrees.of(1.0);
+
+        public static final double ROLLER_GEAR = 9.0;
+        public static final double ROLLER_DIA = 2.0;    //inches
+        public static final double ROLLER_MTR_TO_IN = Math.PI * ROLLER_DIA / ROLLER_GEAR;
     }
 
     public static class kElevator{
@@ -73,7 +77,7 @@ public final class Constants {
         
         public static final double RATIO = 49; // 49:1
         public static final double SPROCKET_DIA = 1.75; // Pitch Diameter of 22T #25 Sprocket
-        public static final double MTR_TO_IN = 3.1415 * SPROCKET_DIA / RATIO;
+        public static final double MTR_TO_IN = Math.PI * SPROCKET_DIA / RATIO;
 
         public static final int CURRENT_LIMIT = 30;
         public static final int LEFT_CANID = 2;
