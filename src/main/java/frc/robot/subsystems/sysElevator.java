@@ -81,24 +81,8 @@ public class sysElevator extends SubsystemBase {
     // This method will be called once per scheduler run
     Pos = getPosition();
     SmartDashboard.putNumber("Elevator Position", Pos);
-    GlobalVariables.Elevator_Position = Pos;
     SmartDashboard.putNumber("elevator output", mtrLeftEle.getOutputCurrent());
     
-    if (Pos < kElevator.LOWER_LIMIT) {
-      GlobalVariables.Arm_Min = 90;
-    } else {
-      GlobalVariables.Arm_Min = 160;
-    }
-    if (Pos > kElevator.UPPER_LIMIT) {
-      GlobalVariables.Arm_Min = 40;
-    } else {
-      GlobalVariables.Arm_Min = 0;
-    }
-    
-    // Shuffleboard.getTab("Elevator").addNumber("Arm Max",this::getArmMax);
-    // Shuffleboard.getTab("Elevator").addNumber("Arm Min",this::getArmMin);
-    // Shuffleboard.getTab("Elevator").addNumber("Elevator Position",this::getPosition);
-    // Shuffleboard.getTab("Elevator").addNumber("Elevator Output DC", mtrLeftEle::getAppliedOutput);
   }
 
   public void setDC(double pwr){

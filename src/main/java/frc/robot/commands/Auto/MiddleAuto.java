@@ -9,6 +9,11 @@ import static edu.wpi.first.units.Units.Inches;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import frc.robot.Constants.kArm;
+import frc.robot.Constants.kElevator;
+import frc.robot.commands.Arm.adjCoral;
+import frc.robot.commands.Arm.setCoral;
+import frc.robot.commands.Elevator.CombinedEleArm;
 import frc.robot.commands.drive.Face;
 import frc.robot.commands.drive.cmdDriveTo;
 import frc.robot.subsystems.sysArm;
@@ -32,19 +37,20 @@ public class MiddleAuto extends SequentialCommandGroup {
         Rotation2d.fromDegrees(0), 
         true),
       new Face(Drive, Degrees.of(0)),
-      // Deploy elevator
+      new CombinedEleArm(Arm, Elevator, kArm.LVL4, kElevator.LVL_4),
+      new setCoral(Arm),
       new cmdDriveTo(Drive, 
         Inches.of(117.688), 
         Inches.of(152), 
         Rotation2d.fromDegrees(0), 
         true),
-      // Score Coral
-      // Drive back
+      new adjCoral(Arm, 14),
       new cmdDriveTo(Drive, 
         Inches.of(110), 
         Inches.of(152), 
         Rotation2d.fromDegrees(0), 
-        true)
+        true),
+      new CombinedEleArm(Arm, Elevator, kArm.HOME, kElevator.HOME)
     );
   }
 }

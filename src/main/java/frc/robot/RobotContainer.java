@@ -6,56 +6,53 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
-
-import java.util.function.DoubleSupplier;
-
-import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveRequest;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+// import frc.robot.subsystems.CommandSwerveDrivetrain;
+// import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
+// import com.ctre.phoenix6.swerve.SwerveRequest;
+// import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.subsystems.CommandSwerveDrivetrain;
-import frc.robot.subsystems.sysArm;
-import frc.robot.subsystems.sysClimber;
+import edu.wpi.first.math.geometry.Rotation2d;
+
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Direction;
-import frc.robot.Constants.kArm;
-import frc.robot.Constants.kClimber;
-import frc.robot.Constants.kControllers;
-import frc.robot.Constants.kDrive;
-import frc.robot.Constants.kElevator;
-import frc.robot.commands.Arm.ArmDrivePos;
-import frc.robot.commands.Arm.ArmSPadjust;
-import frc.robot.commands.Arm.ArmSetDC;
-import frc.robot.commands.Arm.Rollers;
-import frc.robot.commands.Arm.setRollers;
-import frc.robot.commands.Arm.AutoIntake;
+import frc.robot.Constants.*;
+// import frc.robot.Constants.kClimber;
+// import frc.robot.Constants.kControllers;
+// import frc.robot.Constants.kDrive;
+// import frc.robot.Constants.kElevator;
+import frc.robot.commands.Arm.*;
+// import frc.robot.commands.Arm.ArmSPadjust;
+// import frc.robot.commands.Arm.ArmSetDC;
+// import frc.robot.commands.Arm.Rollers;
+// import frc.robot.commands.Arm.setRollers;
+// import frc.robot.commands.Arm.AutoIntake;
 
-import frc.robot.commands.Auto.LineAuto;
-import frc.robot.commands.Auto.MiddleAuto;
+// import frc.robot.commands.Auto.LineAuto;
+// import frc.robot.commands.Auto.MiddleAuto;
 import frc.robot.commands.Climber.Climb;
-import frc.robot.commands.Elevator.CombinedEleArm;
-import frc.robot.commands.Elevator.EleSPadjust;
-import frc.robot.commands.Elevator.ElevatorPos;
-import frc.robot.commands.Elevator.ElevatorPwr;
-import frc.robot.commands.Elevator.resetEle;
-import frc.robot.commands.drive.FCdrive;
-import frc.robot.commands.drive.RCdrive;
-import frc.robot.commands.drive.TeleOpDrive;
-import frc.robot.commands.drive.reseedFC;
-import frc.robot.commands.drive.cmdDriveTo;
-import frc.robot.commands.drive.Stop;
-import frc.robot.commands.Auto.LeftAuto;
+import frc.robot.commands.Elevator.*;
+// import frc.robot.commands.Elevator.CombinedEleArm;
+// import frc.robot.commands.Elevator.EleSPadjust;
+// import frc.robot.commands.Elevator.ElevatorPos;
+// import frc.robot.commands.Elevator.ElevatorPwr;
+// import frc.robot.commands.Elevator.resetEle;
+import frc.robot.commands.drive.*;
+// import frc.robot.commands.drive.RCdrive;
+// import frc.robot.commands.drive.TeleOpDrive;
+// import frc.robot.commands.drive.reseedFC;
+// import frc.robot.commands.drive.cmdDriveTo;
+
 import frc.robot.commands.Auto.*;
 import frc.robot.generated.TunerConstants;
 
 import frc.robot.subsystems.sysDrive;
 import frc.robot.subsystems.sysElevator;
+import frc.robot.subsystems.sysArm;
+import frc.robot.subsystems.sysClimber;
 
 public class RobotContainer {
     
@@ -115,6 +112,9 @@ public class RobotContainer {
         dsh_selAuto.addOption("Left Auto", new LeftAuto(sys_drive, sys_Arm, sys_ele));
         dsh_selAuto.addOption("Middle Auto", new MiddleAuto(sys_drive, sys_Arm, sys_ele));
         dsh_selAuto.addOption("Rigth Auto", null);
+        dsh_selAuto.addOption("Test", new SequentialCommandGroup( 
+            new cmdDriveTo(sys_drive, Inches.of(48), Inches.of(0), Rotation2d.fromDegrees(0), true)
+            ));
         dsh_selAuto.addOption("Do Nothing", null);
 
         //Shuffleboard.getTab("Auto").add(dsh_selAuto);
@@ -230,17 +230,6 @@ public class RobotContainer {
     }
 
     public Command getAutonomousCommand() {
-       
-    //    return new SequentialCommandGroup(
-    //     new ParallelDeadlineGroup(
-    //     new WaitCommand(2),
-    //     new TeleOpDrive(sys_drive, sys_drive::autospeed, sys_drive::zerospeed, sys_drive::zerospeed)),
-    //     new TeleOpDrive(sys_drive, sys_drive::zerospeed, sys_drive::zerospeed, sys_drive::zerospeed)
-    //      );
-
-        // return new SequentialCommandGroup( 
-        // new cmdDriveTo(sys_drive, Inches.of(48), Inches.of(48), Rotation2d.fromDegrees(120), true),
-        // new Stop(sys_drive));
 
         return dsh_selAuto.getSelected();
 

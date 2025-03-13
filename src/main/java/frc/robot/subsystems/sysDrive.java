@@ -6,10 +6,10 @@ package frc.robot.subsystems;
 
 import static edu.wpi.first.units.Units.*;
 
-import java.util.function.DoubleSupplier;
+
 
 import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
-import com.ctre.phoenix6.swerve.SwerveModuleConstants.SteerFeedbackType;
+
 import com.ctre.phoenix6.swerve.SwerveRequest;
 
 
@@ -150,7 +150,6 @@ public class sysDrive extends SubsystemBase {
       .withVelocityY(vel_Y)
       .withRotationalRate(rot)  
     );
-    SmartDashboard.putNumber("RC Drive Request", vel_X);
   }
 
   /**
