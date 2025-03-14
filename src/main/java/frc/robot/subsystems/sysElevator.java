@@ -17,6 +17,7 @@ import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -35,6 +36,9 @@ public class sysElevator extends SubsystemBase {
   private RelativeEncoder encEle;
 
   private double Pos;
+  public boolean ele_sw_status;
+
+  private DigitalInput ele_sw = new DigitalInput(1);
   
   public sysElevator() {
 
@@ -80,8 +84,17 @@ public class sysElevator extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Pos = getPosition();
+
+    if (ele_sw_status && !ele_sw.get() && (encEle.getVelocity() < 0)){  //On false & Elevator traveling down
+      resetTO(1.5); 
+    }
+    ele_sw_status = ele_sw.get(); // Update previous loop value
+    
+    
+    SmartDashboard.putBoolean("Elevator Switch", ele_sw_status);
     SmartDashboard.putNumber("Elevator Position", Pos);
-    SmartDashboard.putNumber("elevator output", mtrLeftEle.getOutputCurrent());
+    //SmartDashboard.putNumber("elevator output", mtrLeftEle.getOutputCurrent());
+   
     
   }
 
@@ -106,5 +119,9 @@ public class sysElevator extends SubsystemBase {
 
   public void reset(){
     encEle.setPosition(0);
+  }
+
+  public void resetTO(double pos){
+    encEle.setPosition(pos);
   }
 }
