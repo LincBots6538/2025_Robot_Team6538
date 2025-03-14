@@ -5,6 +5,7 @@
 package frc.robot.commands.Elevator;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.kArm;
 import frc.robot.Constants.kElevator;
@@ -50,6 +51,8 @@ public class CombinedEleArm extends Command {
     curElevator = Elevator.getPosition();
     errArm = Math.abs(tgtArm - curArm);
     errElevator = Math.abs(tgtElevator - curElevator);
+    // SmartDashboard.putNumber("arm error", errArm);
+    // SmartDashboard.putNumber("ele err", errElevator);
 
     cmdArm = tgtArm;
     cmdElevator = tgtElevator;
@@ -81,12 +84,15 @@ public class CombinedEleArm extends Command {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    SmartDashboard.putString("last cmd", "ele arm");
+  }
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if ((errArm < 2) && (errElevator < 1)) return true;
+    if ((errArm < 5) && (errElevator < 1.5)) return true;
+    
     return false;
   }
 }

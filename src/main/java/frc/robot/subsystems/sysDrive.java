@@ -64,7 +64,7 @@ public class sysDrive extends SubsystemBase {
     SmartDashboard.putNumber("field y", cur_pose.getY());
     SmartDashboard.putNumber("field angle", cur_pose.getRotation().getDegrees());
     SmartDashboard.putBoolean("Valid Field Data", drivetrain.isOdometryValid());
-
+    
   }
 
   /**

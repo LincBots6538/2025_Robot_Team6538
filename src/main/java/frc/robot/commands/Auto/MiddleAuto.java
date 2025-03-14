@@ -7,8 +7,10 @@ package frc.robot.commands.Auto;
 import static edu.wpi.first.units.Units.Degrees;
 import static edu.wpi.first.units.Units.Inches;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.kArm;
 import frc.robot.Constants.kElevator;
 import frc.robot.commands.Arm.adjCoral;
@@ -16,6 +18,7 @@ import frc.robot.commands.Arm.setCoral;
 import frc.robot.commands.Elevator.CombinedEleArm;
 import frc.robot.commands.drive.Face;
 import frc.robot.commands.drive.cmdDriveTo;
+import frc.robot.commands.drive.setPose;
 import frc.robot.subsystems.sysArm;
 import frc.robot.subsystems.sysDrive;
 import frc.robot.subsystems.sysElevator;
@@ -28,8 +31,9 @@ public class MiddleAuto extends SequentialCommandGroup {
   public MiddleAuto(sysDrive Drive, sysArm Arm, sysElevator Elevator) {
     
     // Set Starting Position
-    Drive.setPose(Inches.of(60.75), Inches.of(158.5), Degrees.of(0));
+    //Drive.setPose(Inches.of(60.75), Inches.of(158.5), Degrees.of(0));
     addCommands(
+      new setPose(Drive,Inches.of(60.75), Inches.of(158.5), Degrees.of(0)),
       // Drive to left side of closest reef face
       new cmdDriveTo(Drive, 
         Inches.of(110), 
@@ -45,6 +49,7 @@ public class MiddleAuto extends SequentialCommandGroup {
         Rotation2d.fromDegrees(0), 
         true),
       new adjCoral(Arm, 14),
+      new WaitCommand(.5),
       new cmdDriveTo(Drive, 
         Inches.of(110), 
         Inches.of(152), 

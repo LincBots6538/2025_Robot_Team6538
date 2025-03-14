@@ -92,10 +92,10 @@ public class sysArm extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
     Pos = getArmPos();
-
+    //SmartDashboard.putString("arm cmd", this.getCurrentCommand().getName());
     SmartDashboard.putNumber("Arm Pos", Pos);
     SmartDashboard.putBoolean("Coral Sw", coral_sw.get());
-    SmartDashboard.putNumber("intake current", mtrLeftRoll.getOutputCurrent());
+    //SmartDashboard.putNumber("intake current", mtrLeftRoll.getOutputCurrent());
   }
 
   /**

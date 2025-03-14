@@ -45,6 +45,7 @@ public class AutoIntake extends Command {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putString("last cmd", "Auto Intake");
     timer.stop();
     if (interrupted) Arm.setRollers(0);
   }

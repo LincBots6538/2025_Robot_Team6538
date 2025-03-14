@@ -36,9 +36,9 @@ public class sysElevator extends SubsystemBase {
   private RelativeEncoder encEle;
 
   private double Pos;
-  public boolean ele_sw_status;
+  public boolean ele_sw_status = false;
 
-  private DigitalInput ele_sw = new DigitalInput(1);
+  private DigitalInput ele_sw = new DigitalInput(4);
   
   public sysElevator() {
 
@@ -86,9 +86,10 @@ public class sysElevator extends SubsystemBase {
     Pos = getPosition();
 
     if (ele_sw_status && !ele_sw.get() && (encEle.getVelocity() < 0)){  //On false & Elevator traveling down
-      resetTO(1.5); 
+      resetTO(2.5); 
     }
     ele_sw_status = ele_sw.get(); // Update previous loop value
+    
     
     
     SmartDashboard.putBoolean("Elevator Switch", ele_sw_status);

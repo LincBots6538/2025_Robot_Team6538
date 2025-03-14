@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Inches;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.kArm;
 import frc.robot.Constants.kElevator;
 import frc.robot.commands.Arm.AutoIntake;
@@ -18,6 +19,7 @@ import frc.robot.commands.Arm.setCoral;
 import frc.robot.commands.Elevator.CombinedEleArm;
 import frc.robot.commands.drive.Face;
 import frc.robot.commands.drive.cmdDriveTo;
+import frc.robot.commands.drive.setPose;
 import frc.robot.subsystems.sysArm;
 import frc.robot.subsystems.sysDrive;
 import frc.robot.subsystems.sysElevator;
@@ -30,9 +32,10 @@ public class LeftAuto extends SequentialCommandGroup {
   public LeftAuto(sysDrive Drive, sysArm Arm, sysElevator Elevator) {
    
     // Set Starting Position
-    Drive.setPose(Inches.of(60.75), Inches.of(18.25), Degrees.of(0));
+    //Drive.setPose(Inches.of(60.75), Inches.of(18.25), Degrees.of(0));
     addCommands(
       // Set Starting Position (60.75, 18.25, 0R)
+      new setPose(Drive, Inches.of(60.75), Inches.of(18.25), Degrees.of(0)),
       // Drive to (145.817, 105.887, 60R)
       new cmdDriveTo(Drive, 
         Inches.of(144.942), 
@@ -51,6 +54,7 @@ public class LeftAuto extends SequentialCommandGroup {
         true),
       // Score Coral
       new adjCoral(Arm, 14),
+      new WaitCommand(0.5),
       // Drive to (145.817, 105.887, 60R)
       new cmdDriveTo(Drive, 
         Inches.of(144.942), 
@@ -95,6 +99,7 @@ public class LeftAuto extends SequentialCommandGroup {
         true),
       // Score Coral
       new adjCoral(Arm, 14),
+      new WaitCommand(0.5),
       // Drive to (191.558, 105.887, 120R)
       new cmdDriveTo(Drive, 
       Inches.of(192.443), 
@@ -139,6 +144,7 @@ public class LeftAuto extends SequentialCommandGroup {
         true),
       // Score Coral
       new adjCoral(Arm, 14),
+      new WaitCommand(0.5),
       // Drive to (202.817, 112.387, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(203.692), 

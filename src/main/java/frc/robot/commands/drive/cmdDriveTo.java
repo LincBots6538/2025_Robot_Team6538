@@ -24,7 +24,7 @@ import frc.robot.subsystems.sysDrive;
 public class cmdDriveTo extends Command {
   private sysDrive Drive;
   private double MAX_SPEED = kDrive.MAX_AUTO_SPEED.in(MetersPerSecond);
-  private double kp = 1.0;
+  private double kp = 2.0;
   private double xVec, yVec, dis, goal, pterm, drot, rot_cmd;
   private Pose2d current, target, delta;
   private boolean StopAtEnd;
@@ -38,7 +38,7 @@ public class cmdDriveTo extends Command {
     target = new Pose2d(xWayPoint, yWayPoint, Facing);
     goal = 1.0; // Distance to run next command, if endstop = false
     StopAtEnd = endStop;
-    if (StopAtEnd) goal = 0.025; // Accuracy if stoping
+    if (StopAtEnd) goal = 0.1; // Accuracy if stoping
 
     addRequirements(subsystem);
   }
@@ -55,6 +55,7 @@ public class cmdDriveTo extends Command {
     delta = target.relativeTo(current);
 
     dis = delta.getTranslation().getDistance(Translation2d.kZero);
+    SmartDashboard.putNumber("auto dist", dis);
 
     pterm = MathUtil.clamp(kp*dis, -1, 1);
     xVec = MAX_SPEED * pterm * delta.getX()/dis;
@@ -68,12 +69,13 @@ public class cmdDriveTo extends Command {
     // Rotation
     Drive.FCdrive_facing(xVec, yVec, target.getRotation());
     
-    SmartDashboard.putNumber("Rotation SP", target.getRotation().getDegrees());
+    //SmartDashboard.putNumber("Rotation SP", target.getRotation().getDegrees());
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
+    SmartDashboard.putString("last cmd", "drive to");
     if (StopAtEnd) Drive.stop();
   }
 

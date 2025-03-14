@@ -10,6 +10,7 @@ import static edu.wpi.first.units.Units.Inches;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Constants.kArm;
 import frc.robot.Constants.kElevator;
 import frc.robot.commands.Arm.AutoIntake;
@@ -18,6 +19,7 @@ import frc.robot.commands.Arm.setCoral;
 import frc.robot.commands.Elevator.CombinedEleArm;
 import frc.robot.commands.drive.Face;
 import frc.robot.commands.drive.cmdDriveTo;
+import frc.robot.commands.drive.setPose;
 import frc.robot.subsystems.sysArm;
 import frc.robot.subsystems.sysDrive;
 import frc.robot.subsystems.sysElevator;
@@ -31,13 +33,14 @@ public class RightAuto extends SequentialCommandGroup {
     
     // Same as left, Y positions, and rotation flipped
     // Set Starting Position
-    Drive.setPose(Inches.of(60.75), Inches.of(-18.25), Degrees.of(0));
+    //Drive.setPose(Inches.of(60.75), Inches.of(-18.25), Degrees.of(0));
     addCommands(
       // Set Starting Position (60.75, 18.25, 0R)
+      new setPose(Drive, Inches.of(60.75), Inches.of(298.75), Degrees.of(0)),
       // Drive to (145.817, 105.887, 60R)
       new cmdDriveTo(Drive, 
         Inches.of(144.942), 
-        Inches.of(-104.371), 
+        Inches.of(212.629), 
         Rotation2d.fromDegrees(0), 
         true),
       new Face(Drive, Degrees.of(-60)),
@@ -47,15 +50,16 @@ public class RightAuto extends SequentialCommandGroup {
       // Drive to (148.817, 111.083, 60R)
       new cmdDriveTo(Drive, 
         Inches.of(148.817), 
-        Inches.of(-111.083), 
+        Inches.of(205.917), 
         Rotation2d.fromDegrees(-60), 
         true),
       // Score Coral
       new adjCoral(Arm, 14),
+      new WaitCommand(0.5),
       // Drive to (145.817, 105.887, 60R)
       new cmdDriveTo(Drive, 
         Inches.of(144.942), 
-        Inches.of(-104.371), 
+        Inches.of(212.629), 
         Rotation2d.fromDegrees(-60), 
         true),
       // Store Arm
@@ -63,7 +67,7 @@ public class RightAuto extends SequentialCommandGroup {
       // Drive to near station
       new cmdDriveTo(Drive, 
         Inches.of(281.882), 
-        Inches.of(-36.712), 
+        Inches.of(280.288), 
         Rotation2d.fromDegrees(-60), 
         true),
       new Face(Drive, Degrees.of(-126)),
@@ -74,14 +78,14 @@ public class RightAuto extends SequentialCommandGroup {
         // Drive to (286.437, 30.442, 126R)
         new cmdDriveTo(Drive, 
           Inches.of(286.437), 
-          Inches.of(-30.442), 
+          Inches.of(286.558), 
           Rotation2d.fromDegrees(-126), 
           true)
       ),
       // Drive to (191.558, 105.887, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(192.443), 
-        Inches.of(-104.371), 
+        Inches.of(212.629), 
         Rotation2d.fromDegrees(-126), 
         true),
       new Face(Drive, Degrees.of(-120)),
@@ -91,15 +95,16 @@ public class RightAuto extends SequentialCommandGroup {
       // Drive to (188.558, 111.083, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(188.558), 
-        Inches.of(-111.083), 
+        Inches.of(205.917), 
         Rotation2d.fromDegrees(-120), 
         true),
       // Score Coral
       new adjCoral(Arm, 14),
+      new WaitCommand(0.5),
       // Drive to (191.558, 105.887, 120R)
       new cmdDriveTo(Drive, 
       Inches.of(192.443), 
-      Inches.of(-104.371), 
+      Inches.of(212.629), 
         Rotation2d.fromDegrees(-120), 
         true),
       // Store Arm
@@ -107,7 +112,7 @@ public class RightAuto extends SequentialCommandGroup {
       // Drive pre-feeder station
       new cmdDriveTo(Drive, 
         Inches.of(281.882), 
-        Inches.of(-36.712), 
+        Inches.of(280.288), 
         Rotation2d.fromDegrees(-120), 
         true),
       new Face(Drive, Degrees.of(-126)),
@@ -118,14 +123,14 @@ public class RightAuto extends SequentialCommandGroup {
         // Drive to (286.437, 30.442, 126R)
         new cmdDriveTo(Drive, 
           Inches.of(286.437), 
-          Inches.of(-30.442), 
+          Inches.of(212.629), 
           Rotation2d.fromDegrees(-126), 
           true)
       ),
       // Drive to (202.817, 112.387, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(203.692), 
-        Inches.of(-110.871), 
+        Inches.of(206.129), 
         Rotation2d.fromDegrees(-126), 
         true),
       new Face(Drive, Degrees.of(-120)),
@@ -135,15 +140,16 @@ public class RightAuto extends SequentialCommandGroup {
       // Drive to (199.817, 117.583, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(199.817), 
-        Inches.of(-117.583), 
+        Inches.of(199.417), 
         Rotation2d.fromDegrees(-120), 
         true),
       // Score Coral
       new adjCoral(Arm, 14),
+      new WaitCommand(0.5),
       // Drive to (202.817, 112.387, 120R)
       new cmdDriveTo(Drive, 
         Inches.of(203.692), 
-        Inches.of(-110.871), 
+        Inches.of(206.129), 
         Rotation2d.fromDegrees(-120), 
         true),
       // Store Arm
@@ -151,7 +157,7 @@ public class RightAuto extends SequentialCommandGroup {
       // Drive pre-feeder station
       new cmdDriveTo(Drive, 
         Inches.of(281.882), 
-        Inches.of(-36.712), 
+        Inches.of(280.288), 
         Rotation2d.fromDegrees(-120), 
         true),
       new Face(Drive, Degrees.of(-126)),
@@ -162,7 +168,7 @@ public class RightAuto extends SequentialCommandGroup {
         // Drive to (286.437, 30.442, 126R)
         new cmdDriveTo(Drive, 
           Inches.of(286.437), 
-          Inches.of(-30.442), 
+          Inches.of(286.558), 
           Rotation2d.fromDegrees(-126), 
           true)
       )

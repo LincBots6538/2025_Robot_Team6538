@@ -6,6 +6,9 @@
 package frc.robot;
 
 import static edu.wpi.first.units.Units.*;
+
+import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.UsbCamera;
 // import frc.robot.subsystems.CommandSwerveDrivetrain;
 // import com.ctre.phoenix6.swerve.SwerveModule.DriveRequestType;
 // import com.ctre.phoenix6.swerve.SwerveRequest;
@@ -77,6 +80,8 @@ public class RobotContainer {
 
     // Auto Chooser
     private SendableChooser<Command> dsh_selAuto = new SendableChooser<>();
+
+    private UsbCamera cam;
     
     //#region CTRE Swerve Control
 
@@ -99,7 +104,9 @@ public class RobotContainer {
 
     public RobotContainer() {
         // Start Camera
-
+        //cam = CameraServer.startAutomaticCapture();
+        
+        //cam.setFPS(15);
         // Default Commands
         sys_drive.setDefaultCommand(new TeleOpDrive(
             sys_drive,
@@ -111,10 +118,17 @@ public class RobotContainer {
         dsh_selAuto.setDefaultOption("Line Auto", new LineAuto(sys_drive));
         dsh_selAuto.addOption("Left Auto", new LeftAuto(sys_drive, sys_Arm, sys_ele));
         dsh_selAuto.addOption("Middle Auto", new MiddleAuto(sys_drive, sys_Arm, sys_ele));
-        dsh_selAuto.addOption("Right Auto", null);
+        dsh_selAuto.addOption("Right Auto", new RightAuto(sys_drive, sys_Arm, sys_ele));
         dsh_selAuto.addOption("Test", new SequentialCommandGroup( 
-            new cmdDriveTo(sys_drive, Inches.of(0), Inches.of(0), Rotation2d.fromDegrees(0), true),
-            new Face(sys_drive, Degrees.of(45))
+            new setPose(sys_drive, 
+                Inches.of(0), // Starting X pos
+                Inches.of(0), // Starting Y pos
+                Degrees.of(0)), // Starting rotation
+            new cmdDriveTo(sys_drive, // Moves relative to setPose
+                Inches.of(36),  // positive Toward the elevator 
+                Inches.of(0),   // positive opposite RSL side
+                Rotation2d.fromDegrees(0), true),   //positive CCW
+            new Face(sys_drive, Degrees.of(90))
             ));
         dsh_selAuto.addOption("Do Nothing", null);
 
@@ -167,6 +181,8 @@ public class RobotContainer {
         
         jyst_Drive.start().onTrue(new reseedFC(sys_drive));
         
+        //jyst_Drive.a().onTrue(new DriveNearest(sys_drive));
+        //jyst_Drive.b().onTrue(new Stop(sys_drive));
 
         sys_drive.registerTelemetry(logger);
         
