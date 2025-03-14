@@ -111,9 +111,10 @@ public class RobotContainer {
         dsh_selAuto.setDefaultOption("Line Auto", new LineAuto(sys_drive));
         dsh_selAuto.addOption("Left Auto", new LeftAuto(sys_drive, sys_Arm, sys_ele));
         dsh_selAuto.addOption("Middle Auto", new MiddleAuto(sys_drive, sys_Arm, sys_ele));
-        dsh_selAuto.addOption("Rigth Auto", null);
+        dsh_selAuto.addOption("Right Auto", null);
         dsh_selAuto.addOption("Test", new SequentialCommandGroup( 
-            new cmdDriveTo(sys_drive, Inches.of(48), Inches.of(0), Rotation2d.fromDegrees(0), true)
+            new cmdDriveTo(sys_drive, Inches.of(0), Inches.of(0), Rotation2d.fromDegrees(0), true),
+            new Face(sys_drive, Degrees.of(45))
             ));
         dsh_selAuto.addOption("Do Nothing", null);
 
@@ -175,18 +176,10 @@ public class RobotContainer {
         
         // Roller buttons
         // Position Coral
-        jyst_Manip.leftTrigger().onTrue(new SequentialCommandGroup(
-            new setRollers(sys_Arm, kArm.ROLLER_BACK),
-            new WaitCommand(0.1),
-            new setRollers(sys_Arm, 0)
-        ));
+        jyst_Manip.leftTrigger().onTrue(new setCoral(sys_Arm));
         // Auto Intake
-        jyst_Manip.rightTrigger().whileTrue(new SequentialCommandGroup(
-            new setRollers(sys_Arm, kArm.ROLLER_FWD),
-            new WaitCommand(0.1),
-            new AutoIntake(sys_Arm),
-            new setRollers(sys_Arm, 0)
-        ));
+        jyst_Manip.rightTrigger().onTrue(new AutoIntake(sys_Arm));
+            
         
         // Elevator buttons
         jyst_Manip.a().onTrue(new CombinedEleArm(sys_Arm, sys_ele, kArm.HOME, kElevator.HOME)); // Home 

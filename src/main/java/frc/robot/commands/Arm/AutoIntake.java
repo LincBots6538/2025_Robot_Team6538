@@ -5,6 +5,7 @@
 package frc.robot.commands.Arm;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Constants.kArm;
 import frc.robot.subsystems.sysArm;
@@ -12,7 +13,8 @@ import frc.robot.subsystems.sysArm;
 /* You should consider using the more terse Command factories API instead https://docs.wpilib.org/en/stable/docs/software/commandbased/organizing-command-based.html#defining-commands */
 public class AutoIntake extends Command {
   private sysArm Arm;
-  private Timer timer;
+  private Timer timer = new Timer();
+  private boolean coralSW;
 
   /** Creates a new AutoIntake. Timing command, end when Coral has been detected */
   public AutoIntake(sysArm Arm_sys) {
@@ -28,16 +30,16 @@ public class AutoIntake extends Command {
     timer.reset();
     timer.start();
     Arm.setRollers(kArm.ROLLER_FWD);
-
+    if (!(Arm.coralSW())){
+      this.cancel();
+    }
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    if (!Arm.coralSW()) {
-      Arm.setRollersDist(3.5);
-      end(false);
-    } else if (timer.hasElapsed(10)) end(true);
+    coralSW = Arm.coralSW();
+    
   }
 
   // Called once the command ends or is interrupted.
@@ -50,8 +52,14 @@ public class AutoIntake extends Command {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    
-
+    if (timer.hasElapsed(10)) {
+      Arm.setRollers(0);
+      return true;
+    }
+    if (!coralSW){
+      Arm.setRollersDist(3.5);
+      return true;
+    }
     return false;
   }
 }

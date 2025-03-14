@@ -70,7 +70,7 @@ public final class Constants {
 
     public static class kElevator{
         // these height should represent the distance the elevator moves from the starting position, or we can change the math to be the height from the ground
-        public static final double HOME = 1; // Home is when elevator is at chute
+        public static final double HOME = 1.5; // Home is when elevator is at chute
         public static final double LVL_2 = 11.5; // For level 2 coral (inches)
         public static final double LVL_3 = 18.8; // For level 3 coral (inches)
         public static final double LVL_4 = 30.5; // For level 4 coral (inches)
